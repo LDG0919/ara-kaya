@@ -1,54 +1,418 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ara-Kaya</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            max-width: 700px;
-            margin: 80px auto;
-            padding: 0 20px;
-            color: #222;
-            line-height: 1.6;
-        }
-        h1 { font-size: 2em; margin-bottom: 10px; }
-        .subtitle { color: #666; margin-bottom: 40px; }
-        .app { 
-            border: 1px solid #eee; 
-            border-radius: 8px; 
-            padding: 20px; 
-            margin-bottom: 16px; 
-        }
-        .app h3 { margin: 0 0 8px 0; }
-        .app p { margin: 0; color: #555; }
-        footer { 
-            margin-top: 60px; 
-            padding-top: 20px; 
-            border-top: 1px solid #eee; 
-            color: #888; 
-            font-size: 0.9em; 
-        }
-        a { color: #0066cc; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ara-Kaya — Independent app development studio</title>
+<meta name="description" content="Independent app development studio. We build calm, focused apps.">
+<meta property="og:title" content="Ara-Kaya">
+<meta property="og:description" content="Independent app development studio">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg-light: #f0f6fa;
+    --bg-mid: #d6e7f2;
+    --bg-deep: #b8d4e6;
+    --text-primary: #1e3a52;
+    --text-secondary: #5a7589;
+    --text-tertiary: #6b8a9e;
+    --accent: #4a8db8;
+    --accent-light: #7ab5d4;
+    --card-bg: #ffffff;
+    --border: rgba(74, 141, 184, 0.15);
+    --border-strong: rgba(74, 141, 184, 0.3);
+  }
+
+  html, body {
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(180deg, #e8f1f8 0%, #f5f9fc 40%, #ffffff 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+  }
+
+  /* 배경 파도 애니메이션 */
+  .waves {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 200%;
+    height: 100%;
+  }
+
+  .wave svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .wave-1 {
+    animation: waveMove 18s ease-in-out infinite;
+    opacity: 0.5;
+  }
+
+  .wave-2 {
+    animation: waveMove 24s ease-in-out infinite reverse;
+    opacity: 0.35;
+  }
+
+  .wave-3 {
+    animation: waveMove 30s ease-in-out infinite;
+    opacity: 0.25;
+  }
+
+  @keyframes waveMove {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-25%); }
+  }
+
+  /* 메인 컨테이너 */
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 80px 32px 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 헤더 */
+  .header {
+    margin-bottom: 80px;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.2s forwards;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-tertiary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 7vw, 56px);
+    font-weight: 500;
+    letter-spacing: -1.5px;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    line-height: 1.1;
+  }
+
+  .tagline {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    max-width: 480px;
+  }
+
+  .tagline-kr {
+    display: block;
+    margin-top: 4px;
+    font-size: 15px;
+    color: var(--text-tertiary);
+  }
+
+  /* 섹션 */
+  .section {
+    margin-bottom: 64px;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.5s forwards;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-tertiary);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* 앱 카드 */
+  .apps {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .app-card {
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 22px 26px;
+    border: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .app-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(122, 181, 212, 0.08), transparent);
+    transition: left 0.8s ease;
+  }
+
+  .app-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-strong);
+    box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.18);
+  }
+
+  .app-card:hover::before {
+    left: 100%;
+  }
+
+  .app-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #7ab5d4, #4a8db8);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .app-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .app-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+
+  .app-desc {
+    font-size: 13.5px;
+    color: var(--text-tertiary);
+    line-height: 1.5;
+  }
+
+  .app-arrow {
+    color: var(--accent-light);
+    font-size: 18px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .app-card:hover .app-arrow {
+    transform: translateX(4px);
+    color: var(--accent);
+  }
+
+  /* Coming soon 카드 */
+  .app-card.coming-soon {
+    border-style: dashed;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: default;
+  }
+
+  .app-card.coming-soon:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--border);
+  }
+
+  .app-card.coming-soon .app-icon {
+    background: var(--bg-mid);
+    opacity: 0.5;
+  }
+
+  .app-card.coming-soon .app-name {
+    color: var(--text-tertiary);
+  }
+
+  /* 푸터 */
+  .footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeUp 1s ease-out 0.8s forwards;
+  }
+
+  .contact a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+  }
+
+  .contact a:hover {
+    color: var(--accent);
+  }
+
+  .copyright {
+    font-size: 13px;
+    color: var(--text-tertiary);
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 모바일 */
+  @media (max-width: 640px) {
+    .container {
+      padding: 60px 24px 40px;
+    }
+    .header {
+      margin-bottom: 60px;
+    }
+    .footer {
+      margin-top: 60px;
+    }
+    .app-card {
+      padding: 18px 20px;
+    }
+  }
+
+  /* 다크모드 (선택적 — 기본은 라이트) */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-primary: #e8f1f8;
+      --text-secondary: #a8c0d0;
+      --text-tertiary: #7a95a8;
+      --card-bg: rgba(30, 58, 82, 0.5);
+      --border: rgba(122, 181, 212, 0.15);
+      --border-strong: rgba(122, 181, 212, 0.3);
+    }
+    body {
+      background: linear-gradient(180deg, #0d1f2d 0%, #1a3149 50%, #0d1f2d 100%);
+    }
+    .app-card.coming-soon {
+      background: rgba(30, 58, 82, 0.2);
+    }
+  }
+</style>
 </head>
 <body>
+
+<!-- 배경 파도 -->
+<div class="waves">
+  <div class="wave wave-1">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#7ab5d4" fill-opacity="0.4" d="M0,192L48,197.3C96,203,192,213,288,202.7C384,192,480,160,576,165.3C672,171,768,213,864,218.7C960,224,1056,192,1152,170.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+  <div class="wave wave-2">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#5a9bc4" fill-opacity="0.5" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,213.3C960,203,1056,181,1152,176C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+  <div class="wave wave-3">
+    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#4a8db8" fill-opacity="0.6" d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,224C672,224,768,256,864,256C960,256,1056,224,1152,213.3C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+</div>
+
+<div class="container">
+
+  <header class="header">
+    <div class="eyebrow">Studio</div>
     <h1>Ara-Kaya</h1>
-    <p class="subtitle">Independent app development studio</p>
+    <p class="tagline">
+      Independent app development studio.
+      <span class="tagline-kr">잔잔하게, 그러나 꾸준히 만들어 갑니다.</span>
+    </p>
+  </header>
 
-    <h2>Apps</h2>
-    
-    <div class="app">
-        <h3>Abak Futures Calc</h3>
-        <p>PnL & liquidation price calculator for crypto futures trading.</p>
+  <section class="section">
+    <div class="section-label">Apps</div>
+    <div class="apps">
+
+      <a href="#" class="app-card">
+        <div class="app-icon">A</div>
+        <div class="app-info">
+          <div class="app-name">Abak Futures Calc</div>
+          <div class="app-desc">PnL & liquidation price calculator for crypto futures trading</div>
+        </div>
+        <div class="app-arrow">→</div>
+      </a>
+
+      <div class="app-card coming-soon">
+        <div class="app-icon"></div>
+        <div class="app-info">
+          <div class="app-name">Coming soon</div>
+          <div class="app-desc">다음 파도가 오는 중</div>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-    <p style="color: #888; margin-top: 30px;">More apps coming soon.</p>
+  <footer class="footer">
+    <div class="contact">
+      <a href="mailto:ldgu0919@naver.com">ldgu0919@naver.com</a>
+    </div>
+    <div class="copyright">© 2026 Ara-Kaya</div>
+  </footer>
 
-    <footer>
-        <p>Contact: <a href="mailto:ldgu0919@naver.com">ldgu0919@naver.com</a></p>
-        <p>© 2026 Ara-Kaya</p>
-    </footer>
+</div>
+
 </body>
 </html>

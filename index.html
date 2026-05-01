@@ -15,9 +15,6 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
-    --bg-light: #f0f6fa;
-    --bg-mid: #d6e7f2;
-    --bg-deep: #b8d4e6;
     --text-primary: #1e3a52;
     --text-secondary: #5a7589;
     --text-tertiary: #6b8a9e;
@@ -26,6 +23,27 @@
     --card-bg: #ffffff;
     --border: rgba(74, 141, 184, 0.15);
     --border-strong: rgba(74, 141, 184, 0.3);
+    --bg-gradient: linear-gradient(180deg, #e8f1f8 0%, #f5f9fc 40%, #ffffff 100%);
+    --wave-1: #7ab5d4;
+    --wave-2: #5a9bc4;
+    --wave-3: #4a8db8;
+    --coming-soon-bg: rgba(255, 255, 255, 0.4);
+  }
+
+  [data-theme="dark"] {
+    --text-primary: #e8f1f8;
+    --text-secondary: #a8c0d0;
+    --text-tertiary: #7a95a8;
+    --accent: #7ab5d4;
+    --accent-light: #a8d0e6;
+    --card-bg: rgba(30, 58, 82, 0.5);
+    --border: rgba(122, 181, 212, 0.15);
+    --border-strong: rgba(122, 181, 212, 0.3);
+    --bg-gradient: linear-gradient(180deg, #0d1f2d 0%, #1a3149 50%, #0d1f2d 100%);
+    --wave-1: #2a5a7a;
+    --wave-2: #1f4560;
+    --wave-3: #163349;
+    --coming-soon-bg: rgba(30, 58, 82, 0.2);
   }
 
   html, body {
@@ -35,14 +53,42 @@
 
   body {
     font-family: 'Inter', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(180deg, #e8f1f8 0%, #f5f9fc 40%, #ffffff 100%);
+    background: var(--bg-gradient);
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
     position: relative;
+    transition: background 0.6s ease, color 0.6s ease;
   }
 
-  /* 배경 파도 애니메이션 */
+  .stars {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  [data-theme="dark"] .stars {
+    opacity: 1;
+  }
+
+  .star {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    animation: twinkle 3s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+  }
+
   .waves {
     position: fixed;
     top: 0;
@@ -68,6 +114,10 @@
     display: block;
   }
 
+  .wave svg path {
+    transition: fill 0.6s ease;
+  }
+
   .wave-1 {
     animation: waveMove 18s ease-in-out infinite;
     opacity: 0.5;
@@ -88,16 +138,105 @@
     50% { transform: translateX(-25%); }
   }
 
-  /* 메인 컨테이너 */
+  /* 토글 버튼 — 버튼 테두리/배경 제거, 아이콘만 */
+  .theme-toggle {
+    position: fixed;
+    top: 36px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    padding: 0;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .theme-toggle:hover {
+    transform: scale(1.15);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.92);
+  }
+
+  .toggle-star { left: 36px; }
+  .toggle-sun-moon { right: 36px; }
+
+  .theme-toggle svg {
+    width: 22px;
+    height: 22px;
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* 별 아이콘 - 라이트모드에선 은은한 윤곽만, 다크모드에선 따뜻하게 빛남 */
+  .star-icon {
+    color: var(--text-tertiary);
+    opacity: 0.5;
+  }
+
+  .theme-toggle:hover .star-icon {
+    opacity: 0.85;
+  }
+
+  [data-theme="dark"] .star-icon {
+    color: #fff4d6;
+    opacity: 0.95;
+    filter: drop-shadow(0 0 8px rgba(255, 230, 160, 0.5))
+            drop-shadow(0 0 16px rgba(255, 217, 125, 0.3));
+  }
+
+  /* 해/달 — 부드러운 색감과 글로우 */
+  .sun-icon, .moon-icon {
+    position: absolute;
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .sun-icon {
+    color: #e8a85c;
+    opacity: 0.65;
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 6px rgba(232, 168, 92, 0.25));
+  }
+
+  .theme-toggle:hover .sun-icon {
+    opacity: 0.9;
+    filter: drop-shadow(0 0 10px rgba(232, 168, 92, 0.4));
+  }
+
+  .moon-icon {
+    color: #d8e4f0;
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  [data-theme="dark"] .sun-icon {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  [data-theme="dark"] .moon-icon {
+    opacity: 0.85;
+    transform: rotate(0deg) scale(1);
+    filter: drop-shadow(0 0 10px rgba(216, 228, 240, 0.4))
+            drop-shadow(0 0 20px rgba(180, 200, 220, 0.2));
+  }
+
+  [data-theme="dark"] .theme-toggle:hover .moon-icon {
+    opacity: 1;
+  }
+
   .container {
     max-width: 720px;
     margin: 0 auto;
-    padding: 80px 32px 60px;
+    padding: 100px 32px 60px;
     position: relative;
     z-index: 1;
   }
 
-  /* 헤더 */
   .header {
     margin-bottom: 80px;
     opacity: 0;
@@ -136,7 +275,6 @@
     color: var(--text-tertiary);
   }
 
-  /* 섹션 */
   .section {
     margin-bottom: 64px;
     opacity: 0;
@@ -162,7 +300,6 @@
     background: var(--border);
   }
 
-  /* 앱 카드 */
   .apps {
     display: flex;
     flex-direction: column;
@@ -183,6 +320,8 @@
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
   }
 
   .app-card::before {
@@ -251,10 +390,9 @@
     color: var(--accent);
   }
 
-  /* Coming soon 카드 */
   .app-card.coming-soon {
     border-style: dashed;
-    background: rgba(255, 255, 255, 0.4);
+    background: var(--coming-soon-bg);
     cursor: default;
   }
 
@@ -265,7 +403,7 @@
   }
 
   .app-card.coming-soon .app-icon {
-    background: var(--bg-mid);
+    background: var(--border-strong);
     opacity: 0.5;
   }
 
@@ -273,7 +411,6 @@
     color: var(--text-tertiary);
   }
 
-  /* 푸터 */
   .footer {
     margin-top: 80px;
     padding-top: 32px;
@@ -304,71 +441,71 @@
   }
 
   @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* 모바일 */
   @media (max-width: 640px) {
-    .container {
-      padding: 60px 24px 40px;
+    .container { padding: 80px 24px 40px; }
+    .header { margin-bottom: 60px; }
+    .footer { margin-top: 60px; }
+    .app-card { padding: 18px 20px; }
+    .theme-toggle {
+      top: 24px;
     }
-    .header {
-      margin-bottom: 60px;
-    }
-    .footer {
-      margin-top: 60px;
-    }
-    .app-card {
-      padding: 18px 20px;
-    }
-  }
-
-  /* 다크모드 (선택적 — 기본은 라이트) */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --text-primary: #e8f1f8;
-      --text-secondary: #a8c0d0;
-      --text-tertiary: #7a95a8;
-      --card-bg: rgba(30, 58, 82, 0.5);
-      --border: rgba(122, 181, 212, 0.15);
-      --border-strong: rgba(122, 181, 212, 0.3);
-    }
-    body {
-      background: linear-gradient(180deg, #0d1f2d 0%, #1a3149 50%, #0d1f2d 100%);
-    }
-    .app-card.coming-soon {
-      background: rgba(30, 58, 82, 0.2);
+    .toggle-star { left: 24px; }
+    .toggle-sun-moon { right: 24px; }
+    .theme-toggle svg {
+      width: 20px;
+      height: 20px;
     }
   }
 </style>
 </head>
 <body>
 
-<!-- 배경 파도 -->
+<div class="stars" id="stars"></div>
+
 <div class="waves">
   <div class="wave wave-1">
     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#7ab5d4" fill-opacity="0.4" d="M0,192L48,197.3C96,203,192,213,288,202.7C384,192,480,160,576,165.3C672,171,768,213,864,218.7C960,224,1056,192,1152,170.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      <path fill="var(--wave-1)" fill-opacity="0.4" d="M0,192L48,197.3C96,203,192,213,288,202.7C384,192,480,160,576,165.3C672,171,768,213,864,218.7C960,224,1056,192,1152,170.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
     </svg>
   </div>
   <div class="wave wave-2">
     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#5a9bc4" fill-opacity="0.5" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,213.3C960,203,1056,181,1152,176C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      <path fill="var(--wave-2)" fill-opacity="0.5" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,213.3C672,224,768,224,864,213.3C960,203,1056,181,1152,176C1248,171,1344,181,1392,186.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
     </svg>
   </div>
   <div class="wave wave-3">
     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-      <path fill="#4a8db8" fill-opacity="0.6" d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,224C672,224,768,256,864,256C960,256,1056,224,1152,213.3C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+      <path fill="var(--wave-3)" fill-opacity="0.6" d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,224C672,224,768,256,864,256C960,256,1056,224,1152,213.3C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
     </svg>
   </div>
 </div>
+
+<button class="theme-toggle toggle-star" id="toggleStar" aria-label="Toggle theme">
+  <svg class="star-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2L14.39 8.79L21.5 9.27L16.04 13.97L17.77 21.02L12 17.27L6.23 21.02L7.96 13.97L2.5 9.27L9.61 8.79L12 2Z"/>
+  </svg>
+</button>
+
+<button class="theme-toggle toggle-sun-moon" id="toggleSunMoon" aria-label="Toggle theme">
+  <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="4" fill="currentColor"/>
+    <line x1="12" y1="2" x2="12" y2="5"/>
+    <line x1="12" y1="19" x2="12" y2="22"/>
+    <line x1="2" y1="12" x2="5" y2="12"/>
+    <line x1="19" y1="12" x2="22" y2="12"/>
+    <line x1="4.93" y1="4.93" x2="7.05" y2="7.05"/>
+    <line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+    <line x1="4.93" y1="19.07" x2="7.05" y2="16.95"/>
+    <line x1="16.95" y1="7.05" x2="19.07" y2="4.93"/>
+  </svg>
+  <svg class="moon-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
+  </svg>
+</button>
 
 <div class="container">
 
@@ -413,6 +550,44 @@
   </footer>
 
 </div>
+
+<script>
+  const starsContainer = document.getElementById('stars');
+  const starCount = 50;
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement('div');
+    star.className = 'star';
+    const size = Math.random() * 2 + 1;
+    star.style.width = size + 'px';
+    star.style.height = size + 'px';
+    star.style.left = Math.random() * 100 + '%';
+    star.style.top = Math.random() * 100 + '%';
+    star.style.animationDelay = Math.random() * 3 + 's';
+    star.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    starsContainer.appendChild(star);
+  }
+
+  const html = document.documentElement;
+  const toggleStar = document.getElementById('toggleStar');
+  const toggleSunMoon = document.getElementById('toggleSunMoon');
+
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+  }
+
+  function toggleTheme() {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+  }
+
+  toggleStar.addEventListener('click', toggleTheme);
+  toggleSunMoon.addEventListener('click', toggleTheme);
+</script>
 
 </body>
 </html>

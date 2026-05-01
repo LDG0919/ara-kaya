@@ -452,6 +452,17 @@
     color: var(--text-tertiary);
   }
 
+  /* 준비중 - 클릭 가능하지만 미완 상태 시각화 */
+  .app-card.in-progress {
+    border-style: dashed;
+    background: var(--coming-soon-bg);
+  }
+
+  .app-card.in-progress .app-icon {
+    background: linear-gradient(135deg, #a8c0d0, #7a95a8);
+    opacity: 0.85;
+  }
+
   .footer {
     margin-top: 80px;
     padding-top: 32px;
@@ -615,7 +626,7 @@
         <div class="app-arrow">→</div>
       </a>
 
-      <a href="/seureureuk/" class="app-card">
+      <a href="/seureureuk/" class="app-card in-progress">
         <div class="app-icon">S</div>
         <div class="app-info">
           <div class="app-name">
@@ -623,8 +634,8 @@
             <span class="lang-en">Seureureuk</span>
           </div>
           <div class="app-desc">
-            <span class="lang-ko">9개국어 사전 · 단어장</span>
-            <span class="lang-en">9-language dictionary & vocabulary</span>
+            <span class="lang-ko">9개국어 사전 · 단어장 · 준비 중</span>
+            <span class="lang-en">9-language dictionary · Coming soon</span>
           </div>
         </div>
         <div class="app-arrow">→</div>

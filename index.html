@@ -28,6 +28,7 @@
     --wave-2: #5a9bc4;
     --wave-3: #4a8db8;
     --coming-soon-bg: rgba(255, 255, 255, 0.4);
+    --particle-color: #4a8db8;
   }
 
   [data-theme="dark"] {
@@ -44,6 +45,7 @@
     --wave-2: #1f4560;
     --wave-3: #163349;
     --coming-soon-bg: rgba(30, 58, 82, 0.2);
+    --particle-color: #a8d0e6;
   }
 
   html, body {
@@ -61,6 +63,7 @@
     transition: background 0.6s ease, color 0.6s ease;
   }
 
+  /* 기존 트윙클 별 (배경 정적) */
   .stars {
     position: fixed;
     top: 0;
@@ -87,6 +90,99 @@
   @keyframes twinkle {
     0%, 100% { opacity: 0.3; transform: scale(1); }
     50% { opacity: 1; transform: scale(1.2); }
+  }
+
+  /* ===== 하이퍼스페이스 입자 (왼쪽으로 흐름) ===== */
+  .hyperspace {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .particle {
+    position: absolute;
+    background: var(--particle-color);
+    border-radius: 50%;
+    will-change: transform;
+  }
+
+  /* 레이어 1: 가장 먼 별 (작고 느림) */
+  .layer-far .particle {
+    width: 1.5px;
+    height: 1.5px;
+    opacity: 0.4;
+    animation: streamLeft 8s linear infinite;
+  }
+
+  /* 레이어 2: 중간 거리 (보통) */
+  .layer-mid .particle {
+    width: 2px;
+    height: 2px;
+    opacity: 0.6;
+    animation: streamLeft 5s linear infinite;
+  }
+
+  /* 레이어 3: 가까운 별 (크고 빠름, 줄무늬) */
+  .layer-near .particle {
+    width: 3px;
+    height: 3px;
+    opacity: 0.85;
+    animation: streamLeftStreak 2.5s linear infinite;
+    box-shadow: 0 0 4px var(--particle-color);
+  }
+
+  [data-theme="dark"] .layer-near .particle {
+    box-shadow: 0 0 6px var(--particle-color),
+                0 0 12px rgba(122, 181, 212, 0.4);
+  }
+
+  /* 줄무늬 효과 (가까운 별만) */
+  .layer-near .particle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, var(--particle-color), transparent);
+    transform: translateY(-50%);
+    opacity: 0.6;
+  }
+
+  [data-theme="dark"] .layer-near .particle::after {
+    width: 60px;
+    background: linear-gradient(90deg, var(--particle-color), rgba(255, 105, 180, 0.3), transparent);
+  }
+
+  @keyframes streamLeft {
+    0% {
+      transform: translateX(calc(100vw + 50px));
+    }
+    100% {
+      transform: translateX(-50px);
+    }
+  }
+
+  @keyframes streamLeftStreak {
+    0% {
+      transform: translateX(calc(100vw + 80px));
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.85;
+    }
+    90% {
+      opacity: 0.85;
+    }
+    100% {
+      transform: translateX(-80px);
+      opacity: 0;
+    }
   }
 
   .waves {
@@ -136,96 +232,6 @@
   @keyframes waveMove {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(-25%); }
-  }
-
-  /* ===== 달리는 기수 ===== */
-  .rider-track {
-    position: fixed;
-    bottom: 14vh;
-    left: 0;
-    width: 100%;
-    height: 80px;
-    z-index: 1;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .rider {
-    position: absolute;
-    bottom: 0;
-    left: -120px;
-    width: 100px;
-    height: 80px;
-    animation: gallop 7s linear infinite;
-    color: var(--text-secondary);
-    opacity: 0.85;
-    filter: drop-shadow(0 2px 4px rgba(74, 141, 184, 0.3));
-  }
-
-  [data-theme="dark"] .rider {
-    color: var(--accent-light);
-    opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(122, 181, 212, 0.7))
-            drop-shadow(0 0 16px rgba(255, 105, 180, 0.25));
-  }
-
-  @keyframes gallop {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(100vw + 240px)); }
-  }
-
-  .rider svg {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-  }
-
-  .leg {
-    transform-origin: top center;
-    animation: legMove 0.22s linear infinite;
-  }
-
-  .leg-2 { animation-delay: 0.11s; }
-  .leg-3 { animation-delay: 0.05s; }
-  .leg-4 { animation-delay: 0.16s; }
-
-  @keyframes legMove {
-    0%, 100% { transform: rotate(-25deg) translateY(-2px); }
-    50% { transform: rotate(25deg) translateY(0); }
-  }
-
-  .mane, .tail {
-    transform-origin: left center;
-    animation: flow 0.4s ease-in-out infinite alternate;
-  }
-
-  @keyframes flow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(8deg); }
-  }
-
-  .speed-line {
-    position: absolute;
-    height: 1.5px;
-    background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
-    opacity: 0;
-    animation: speedLine 0.5s linear infinite;
-  }
-
-  [data-theme="dark"] .speed-line {
-    background: linear-gradient(90deg, transparent, #ff69b4, var(--accent-light), transparent);
-  }
-
-  .speed-line-1 { top: 25%; width: 70px; animation-delay: 0s; }
-  .speed-line-2 { top: 45%; width: 90px; animation-delay: 0.15s; }
-  .speed-line-3 { top: 65%; width: 60px; animation-delay: 0.3s; }
-  .speed-line-4 { top: 80%; width: 80px; animation-delay: 0.4s; }
-
-  @keyframes speedLine {
-    0% { right: -100px; opacity: 0; }
-    20% { opacity: 0.7; }
-    80% { opacity: 0.5; }
-    100% { right: 110%; opacity: 0; }
   }
 
   /* 우측 상단 컨트롤 영역 */
@@ -291,13 +297,8 @@
     transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .theme-toggle:hover {
-    transform: scale(1.12);
-  }
-
-  .theme-toggle:active {
-    transform: scale(0.92);
-  }
+  .theme-toggle:hover { transform: scale(1.12); }
+  .theme-toggle:active { transform: scale(0.92); }
 
   .theme-toggle svg {
     width: 44px;
@@ -340,9 +341,7 @@
             drop-shadow(0 0 20px rgba(180, 200, 220, 0.2));
   }
 
-  [data-theme="dark"] .theme-toggle:hover .moon-icon {
-    opacity: 1;
-  }
+  [data-theme="dark"] .theme-toggle:hover .moon-icon { opacity: 1; }
 
   .container {
     max-width: 560px;
@@ -449,9 +448,7 @@
     box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.18);
   }
 
-  .app-card:hover::before {
-    left: 100%;
-  }
+  .app-card:hover::before { left: 100%; }
 
   .app-icon {
     width: 48px;
@@ -565,9 +562,7 @@
     transition: color 0.3s ease;
   }
 
-  .contact a:hover {
-    color: var(--accent);
-  }
+  .contact a:hover { color: var(--accent); }
 
   .copyright {
     font-size: 13px;
@@ -616,7 +611,6 @@
     transition: none;
   }
 
-  /* 드래그 핸들 */
   .drag-handle {
     width: 18px;
     height: 36px;
@@ -629,13 +623,8 @@
     transition: color 0.3s ease;
   }
 
-  .drag-handle:hover {
-    color: var(--accent);
-  }
-
-  .drag-handle:active {
-    cursor: grabbing;
-  }
+  .drag-handle:hover { color: var(--accent); }
+  .drag-handle:active { cursor: grabbing; }
 
   .drag-handle svg {
     width: 12px;
@@ -664,9 +653,7 @@
     box-shadow: 0 4px 12px rgba(74, 141, 184, 0.35);
   }
 
-  .play-btn:active {
-    transform: scale(0.95);
-  }
+  .play-btn:active { transform: scale(0.95); }
 
   .play-btn svg {
     width: 14px;
@@ -731,25 +718,15 @@
     fill: currentColor;
   }
 
-  /* 반복 모드 활성 상태 */
   .repeat-btn.active {
     color: var(--accent);
     background: var(--border);
   }
 
-  .repeat-btn .repeat-one {
-    display: none;
-  }
+  .repeat-btn .repeat-one { display: none; }
+  .repeat-btn.repeat-one-mode .repeat-all { display: none; }
+  .repeat-btn.repeat-one-mode .repeat-one { display: block; }
 
-  .repeat-btn.repeat-one-mode .repeat-all {
-    display: none;
-  }
-
-  .repeat-btn.repeat-one-mode .repeat-one {
-    display: block;
-  }
-
-  /* 툴팁 */
   .icon-btn::after {
     content: attr(data-tooltip);
     position: absolute;
@@ -773,9 +750,7 @@
     color: #1a3149;
   }
 
-  .icon-btn:hover::after {
-    opacity: 0.9;
-  }
+  .icon-btn:hover::after { opacity: 0.9; }
 
   @media (max-width: 900px) {
     .container {
@@ -814,14 +789,19 @@
       font-size: 12px;
       max-width: 90px;
     }
-    .rider-track { bottom: 18vh; }
-    .rider { width: 70px; height: 56px; }
   }
 </style>
 </head>
 <body>
 
 <div class="stars" id="stars"></div>
+
+<!-- ===== 하이퍼스페이스 입자 ===== -->
+<div class="hyperspace">
+  <div class="layer-far" id="layerFar"></div>
+  <div class="layer-mid" id="layerMid"></div>
+  <div class="layer-near" id="layerNear"></div>
+</div>
 
 <div class="waves">
   <div class="wave wave-1">
@@ -837,33 +817,6 @@
   <div class="wave wave-3">
     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path fill="var(--wave-3)" fill-opacity="0.6" d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,224C672,224,768,256,864,256C960,256,1056,224,1152,213.3C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-    </svg>
-  </div>
-</div>
-
-<div class="rider-track">
-  <div class="speed-line speed-line-1"></div>
-  <div class="speed-line speed-line-2"></div>
-  <div class="speed-line speed-line-3"></div>
-  <div class="speed-line speed-line-4"></div>
-  <div class="rider">
-    <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
-      <path class="tail" d="M22 50 Q10 48 4 56 Q12 54 22 54 Z" fill="currentColor" opacity="0.75"/>
-      <rect class="leg leg-3" x="30" y="55" width="3" height="20" rx="1" fill="currentColor"/>
-      <rect class="leg leg-4" x="36" y="55" width="3" height="20" rx="1" fill="currentColor"/>
-      <ellipse cx="50" cy="50" rx="28" ry="10" fill="currentColor"/>
-      <rect class="leg leg-1" x="62" y="55" width="3" height="20" rx="1" fill="currentColor"/>
-      <rect class="leg leg-2" x="68" y="55" width="3" height="20" rx="1" fill="currentColor"/>
-      <path d="M70 48 L80 30 L84 32 L74 50 Z" fill="currentColor"/>
-      <path class="mane" d="M72 38 Q76 32 78 36 Q80 30 82 34 Q84 28 86 32 L82 40 Z" fill="currentColor" opacity="0.7"/>
-      <ellipse cx="84" cy="30" rx="9" ry="5" fill="currentColor"/>
-      <path d="M88 25 L90 20 L86 24 Z" fill="currentColor"/>
-      <rect x="48" y="42" width="3" height="10" rx="1" fill="currentColor"/>
-      <rect x="54" y="42" width="3" height="10" rx="1" fill="currentColor"/>
-      <path d="M48 30 L46 42 L60 42 L58 30 Z" fill="currentColor"/>
-      <rect x="56" y="32" width="2.5" height="9" rx="1" fill="currentColor" transform="rotate(-35 57 36)"/>
-      <circle cx="53" cy="26" r="4.5" fill="currentColor"/>
-      <ellipse cx="53" cy="22.5" rx="5.5" ry="1.5" fill="currentColor"/>
     </svg>
   </div>
 </div>
@@ -976,7 +929,6 @@
 <audio id="bgm" src="music/Seureureuk.mp3" preload="auto"></audio>
 
 <div class="music-player" id="musicPlayer">
-  <!-- 드래그 핸들 -->
   <div class="drag-handle" id="dragHandle" title="드래그하여 이동">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <circle cx="9" cy="6" r="1.5"/>
@@ -1025,7 +977,7 @@
 </div>
 
 <script>
-  // 별 생성
+  // ===== 트윙클 별 (배경 정적) =====
   const starsContainer = document.getElementById('stars');
   const starCount = 50;
   for (let i = 0; i < starCount; i++) {
@@ -1040,6 +992,23 @@
     star.style.animationDuration = (Math.random() * 2 + 2) + 's';
     starsContainer.appendChild(star);
   }
+
+  // ===== 하이퍼스페이스 입자 =====
+  function createParticles(containerId, count) {
+    const container = document.getElementById(containerId);
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.animationDelay = -(Math.random() * 8) + 's';
+      container.appendChild(p);
+    }
+  }
+
+  // 레이어별 입자 수 (깊이감 위해 다르게)
+  createParticles('layerFar', 40);   // 멀리 있는 별 - 작고 느림
+  createParticles('layerMid', 30);   // 중간
+  createParticles('layerNear', 15);  // 가까운 별 - 크고 빠르고 줄무늬
 
   const html = document.documentElement;
 
@@ -1097,7 +1066,6 @@
   const repeatBtn = document.getElementById('repeatBtn');
   const dragHandle = document.getElementById('dragHandle');
 
-  // 반복 모드: 'all' (전체 순환) 또는 'one' (한 곡 반복)
   let repeatMode = localStorage.getItem('repeatMode') || 'all';
   
   function applyRepeatMode() {
@@ -1120,7 +1088,6 @@
     applyRepeatMode();
   });
 
-  // 재생/정지
   playBtn.addEventListener('click', () => {
     if (bgm.paused) {
       bgm.play().then(() => {
@@ -1132,7 +1099,6 @@
     }
   });
 
-  // 트랙 변경
   trackSelect.addEventListener('change', (e) => {
     const wasPlaying = !bgm.paused;
     bgm.src = e.target.value;
@@ -1141,7 +1107,6 @@
     }
   });
 
-  // 다음 곡
   function playNext() {
     const currentIdx = trackSelect.selectedIndex;
     const nextIdx = (currentIdx + 1) % trackSelect.options.length;
@@ -1152,12 +1117,8 @@
 
   nextBtn.addEventListener('click', playNext);
 
-  // 곡 끝났을 때 처리
   bgm.addEventListener('ended', () => {
-    if (repeatMode === 'all') {
-      playNext();  // 전체 순환: 다음 곡 자동 재생
-    }
-    // repeatMode === 'one'일 때는 bgm.loop=true이므로 자동으로 같은 곡 반복됨
+    if (repeatMode === 'all') playNext();
   });
 
   bgm.addEventListener('play', () => musicPlayer.classList.add('playing'));
@@ -1168,7 +1129,6 @@
   let dragOffsetX = 0;
   let dragOffsetY = 0;
 
-  // 저장된 위치 복원
   const savedPos = localStorage.getItem('playerPosition');
   if (savedPos) {
     try {
@@ -1186,7 +1146,6 @@
     const rect = musicPlayer.getBoundingClientRect();
     dragOffsetX = clientX - rect.left;
     dragOffsetY = clientY - rect.top;
-    // 초기 위치를 left/top으로 고정
     musicPlayer.style.left = rect.left + 'px';
     musicPlayer.style.top = rect.top + 'px';
     musicPlayer.style.right = 'auto';
@@ -1197,14 +1156,11 @@
     if (!isDragging) return;
     let newLeft = clientX - dragOffsetX;
     let newTop = clientY - dragOffsetY;
-
-    // 화면 경계 제한
     const rect = musicPlayer.getBoundingClientRect();
     const maxLeft = window.innerWidth - rect.width;
     const maxTop = window.innerHeight - rect.height;
     newLeft = Math.max(0, Math.min(newLeft, maxLeft));
     newTop = Math.max(0, Math.min(newTop, maxTop));
-
     musicPlayer.style.left = newLeft + 'px';
     musicPlayer.style.top = newTop + 'px';
   }
@@ -1213,14 +1169,12 @@
     if (!isDragging) return;
     isDragging = false;
     musicPlayer.classList.remove('dragging');
-    // 위치 저장
     localStorage.setItem('playerPosition', JSON.stringify({
       left: musicPlayer.style.left,
       top: musicPlayer.style.top
     }));
   }
 
-  // 마우스 이벤트
   dragHandle.addEventListener('mousedown', (e) => {
     e.preventDefault();
     startDrag(e.clientX, e.clientY);
@@ -1228,7 +1182,6 @@
   document.addEventListener('mousemove', (e) => doDrag(e.clientX, e.clientY));
   document.addEventListener('mouseup', endDrag);
 
-  // 터치 이벤트 (모바일)
   dragHandle.addEventListener('touchstart', (e) => {
     e.preventDefault();
     const t = e.touches[0];

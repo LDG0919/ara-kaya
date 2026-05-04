@@ -1152,6 +1152,24 @@
     }
   }
 
+  // 자동재생 차단 시 다음 사용자 인터랙션에 재생하는 헬퍼
+  function setupResumeOnInteraction() {
+    const resumeOnce = () => {
+      if (bgm.paused && localStorage.getItem('wasPlaying') === 'true') {
+        bgm.play().then(() => {
+          musicPlayer.classList.add('playing');
+          document.body.classList.remove('bgm-paused');
+        }).catch(() => {});
+      }
+      document.removeEventListener('click', resumeOnce);
+      document.removeEventListener('touchstart', resumeOnce);
+      document.removeEventListener('keydown', resumeOnce);
+    };
+    document.addEventListener('click', resumeOnce, { once: true });
+    document.addEventListener('touchstart', resumeOnce, { once: true });
+    document.addEventListener('keydown', resumeOnce, { once: true });
+  }
+
   // loadedmetadata: 일반(풀)로드 시 이어재생
   bgm.addEventListener('loadedmetadata', () => {
     const t = parseFloat(localStorage.getItem('currentTime') || '0');
@@ -1162,7 +1180,10 @@
       bgm.play().then(() => {
         musicPlayer.classList.add('playing');
         document.body.classList.remove('bgm-paused');
-      }).catch(() => {});
+      }).catch(() => {
+        // 자동재생 차단됨 → 다음 사용자 인터랙션에 재생
+        setupResumeOnInteraction();
+      });
     }
   });
 
@@ -1200,21 +1221,8 @@
           musicPlayer.classList.add('playing');
           document.body.classList.remove('bgm-paused');
         }).catch(() => {
-          // 자동재생 차단됨 → 다음 사용자 인터랙션 한 번에 재생
-          const resumeOnce = () => {
-            if (bgm.paused && localStorage.getItem('wasPlaying') === 'true') {
-              bgm.play().then(() => {
-                musicPlayer.classList.add('playing');
-                document.body.classList.remove('bgm-paused');
-              }).catch(() => {});
-            }
-            document.removeEventListener('click', resumeOnce);
-            document.removeEventListener('touchstart', resumeOnce);
-            document.removeEventListener('keydown', resumeOnce);
-          };
-          document.addEventListener('click', resumeOnce, { once: true });
-          document.addEventListener('touchstart', resumeOnce, { once: true });
-          document.addEventListener('keydown', resumeOnce, { once: true });
+          // 자동재생 차단됨 → 다음 사용자 인터랙션에 재생
+          setupResumeOnInteraction();
         });
       }
     }

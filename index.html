@@ -1195,10 +1195,27 @@
         if (t > 0 && bgm.duration && t < bgm.duration) {
           bgm.currentTime = t;
         }
+        // 1차: 바로 재생 시도
         bgm.play().then(() => {
           musicPlayer.classList.add('playing');
           document.body.classList.remove('bgm-paused');
-        }).catch(() => {});
+        }).catch(() => {
+          // 자동재생 차단됨 → 다음 사용자 인터랙션 한 번에 재생
+          const resumeOnce = () => {
+            if (bgm.paused && localStorage.getItem('wasPlaying') === 'true') {
+              bgm.play().then(() => {
+                musicPlayer.classList.add('playing');
+                document.body.classList.remove('bgm-paused');
+              }).catch(() => {});
+            }
+            document.removeEventListener('click', resumeOnce);
+            document.removeEventListener('touchstart', resumeOnce);
+            document.removeEventListener('keydown', resumeOnce);
+          };
+          document.addEventListener('click', resumeOnce, { once: true });
+          document.addEventListener('touchstart', resumeOnce, { once: true });
+          document.addEventListener('keydown', resumeOnce, { once: true });
+        });
       }
     }
   });

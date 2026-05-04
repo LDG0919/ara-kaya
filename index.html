@@ -180,7 +180,6 @@
     overflow: visible;
   }
 
-  /* 다리 움직임 */
   .leg {
     transform-origin: top center;
     animation: legMove 0.22s linear infinite;
@@ -195,7 +194,6 @@
     50% { transform: rotate(25deg) translateY(0); }
   }
 
-  /* 갈기/꼬리 흔들림 */
   .mane, .tail {
     transform-origin: left center;
     animation: flow 0.4s ease-in-out infinite alternate;
@@ -206,7 +204,6 @@
     100% { transform: rotate(8deg); }
   }
 
-  /* 스피드 라인 */
   .speed-line {
     position: absolute;
     height: 1.5px;
@@ -242,7 +239,6 @@
     z-index: 10;
   }
 
-  /* 언어 토글 */
   .lang-toggle {
     display: flex;
     align-items: center;
@@ -282,7 +278,6 @@
     font-size: 12px;
   }
 
-  /* 테마 토글 */
   .theme-toggle {
     width: 60px;
     height: 60px;
@@ -349,7 +344,6 @@
     opacity: 1;
   }
 
-  /* 컨테이너 - 왼쪽 정렬 */
   .container {
     max-width: 560px;
     margin: 0;
@@ -387,13 +381,6 @@
     color: var(--text-secondary);
     line-height: 1.7;
     max-width: 480px;
-  }
-
-  .tagline-sub {
-    display: block;
-    margin-top: 4px;
-    font-size: 15px;
-    color: var(--text-tertiary);
   }
 
   .section {
@@ -587,7 +574,6 @@
     color: var(--text-tertiary);
   }
 
-  /* 언어별 텍스트 표시/숨김 */
   [data-lang="ko"] .lang-en { display: none; }
   [data-lang="en"] .lang-ko { display: none; }
 
@@ -596,16 +582,16 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ===== 음악 플레이어 ===== */
+  /* ===== 음악 플레이어 (드래그 가능) ===== */
   .music-player {
     position: fixed;
-    bottom: 24px;
-    left: 24px;
+    bottom: 32px;
+    right: 32px;
     z-index: 100;
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 14px 10px 10px;
+    gap: 8px;
+    padding: 8px 12px 8px 8px;
     background: var(--card-bg);
     border: 0.5px solid var(--border);
     border-radius: 50px;
@@ -615,11 +601,46 @@
     opacity: 0;
     animation: fadeUp 1s ease-out 1s forwards;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .music-player:hover {
     border-color: var(--border-strong);
     box-shadow: 0 12px 32px -8px rgba(74, 141, 184, 0.28);
+  }
+
+  .music-player.dragging {
+    cursor: grabbing;
+    box-shadow: 0 16px 40px -8px rgba(74, 141, 184, 0.4);
+    transition: none;
+  }
+
+  /* 드래그 핸들 */
+  .drag-handle {
+    width: 18px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    color: var(--text-tertiary);
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+  }
+
+  .drag-handle:hover {
+    color: var(--accent);
+  }
+
+  .drag-handle:active {
+    cursor: grabbing;
+  }
+
+  .drag-handle svg {
+    width: 12px;
+    height: 12px;
+    fill: currentColor;
   }
 
   .play-btn {
@@ -653,17 +674,9 @@
     fill: white;
   }
 
-  .play-btn .icon-pause {
-    display: none;
-  }
-
-  .music-player.playing .play-btn .icon-play {
-    display: none;
-  }
-
-  .music-player.playing .play-btn .icon-pause {
-    display: block;
-  }
+  .play-btn .icon-pause { display: none; }
+  .music-player.playing .play-btn .icon-play { display: none; }
+  .music-player.playing .play-btn .icon-pause { display: block; }
 
   .track-select {
     background: transparent;
@@ -673,7 +686,7 @@
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    padding: 4px 24px 4px 4px;
+    padding: 4px 22px 4px 4px;
     outline: none;
     appearance: none;
     -webkit-appearance: none;
@@ -681,24 +694,16 @@
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b8a9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 4px center;
-    background-size: 14px;
+    background-size: 12px;
     transition: color 0.3s ease;
+    max-width: 110px;
   }
 
-  .track-select:hover {
-    color: var(--text-primary);
-  }
+  .track-select:hover { color: var(--text-primary); }
+  .track-select option { background: var(--card-bg); color: var(--text-primary); }
+  [data-theme="dark"] .track-select option { background: #1a3149; }
 
-  .track-select option {
-    background: var(--card-bg);
-    color: var(--text-primary);
-  }
-
-  [data-theme="dark"] .track-select option {
-    background: #1a3149;
-  }
-
-  .next-btn {
+  .icon-btn {
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -712,17 +717,64 @@
     flex-shrink: 0;
     transition: color 0.3s ease, background 0.3s ease;
     padding: 0;
+    position: relative;
   }
 
-  .next-btn:hover {
+  .icon-btn:hover {
     color: var(--accent);
     background: var(--border);
   }
 
-  .next-btn svg {
+  .icon-btn svg {
     width: 14px;
     height: 14px;
     fill: currentColor;
+  }
+
+  /* 반복 모드 활성 상태 */
+  .repeat-btn.active {
+    color: var(--accent);
+    background: var(--border);
+  }
+
+  .repeat-btn .repeat-one {
+    display: none;
+  }
+
+  .repeat-btn.repeat-one-mode .repeat-all {
+    display: none;
+  }
+
+  .repeat-btn.repeat-one-mode .repeat-one {
+    display: block;
+  }
+
+  /* 툴팁 */
+  .icon-btn::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text-primary);
+    color: var(--card-bg);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  [data-theme="dark"] .icon-btn::after {
+    background: #e8f1f8;
+    color: #1a3149;
+  }
+
+  .icon-btn:hover::after {
+    opacity: 0.9;
   }
 
   @media (max-width: 900px) {
@@ -755,20 +807,15 @@
     }
     .music-player {
       bottom: 16px;
-      left: 16px;
-      padding: 8px 12px 8px 8px;
+      right: 16px;
+      padding: 6px 10px 6px 6px;
     }
     .track-select {
       font-size: 12px;
-      max-width: 100px;
+      max-width: 90px;
     }
-    .rider-track {
-      bottom: 18vh;
-    }
-    .rider {
-      width: 70px;
-      height: 56px;
-    }
+    .rider-track { bottom: 18vh; }
+    .rider { width: 70px; height: 56px; }
   }
 </style>
 </head>
@@ -794,7 +841,6 @@
   </div>
 </div>
 
-<!-- ===== 달리는 기수 ===== -->
 <div class="rider-track">
   <div class="speed-line speed-line-1"></div>
   <div class="speed-line speed-line-2"></div>
@@ -802,63 +848,32 @@
   <div class="speed-line speed-line-4"></div>
   <div class="rider">
     <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
-      <!-- 꼬리 -->
       <path class="tail" d="M22 50 Q10 48 4 56 Q12 54 22 54 Z" fill="currentColor" opacity="0.75"/>
-      
-      <!-- 뒷다리 -->
       <rect class="leg leg-3" x="30" y="55" width="3" height="20" rx="1" fill="currentColor"/>
       <rect class="leg leg-4" x="36" y="55" width="3" height="20" rx="1" fill="currentColor"/>
-      
-      <!-- 말 몸통 -->
       <ellipse cx="50" cy="50" rx="28" ry="10" fill="currentColor"/>
-      
-      <!-- 앞다리 -->
       <rect class="leg leg-1" x="62" y="55" width="3" height="20" rx="1" fill="currentColor"/>
       <rect class="leg leg-2" x="68" y="55" width="3" height="20" rx="1" fill="currentColor"/>
-      
-      <!-- 말 목 -->
       <path d="M70 48 L80 30 L84 32 L74 50 Z" fill="currentColor"/>
-      
-      <!-- 갈기 -->
       <path class="mane" d="M72 38 Q76 32 78 36 Q80 30 82 34 Q84 28 86 32 L82 40 Z" fill="currentColor" opacity="0.7"/>
-      
-      <!-- 말 머리 -->
       <ellipse cx="84" cy="30" rx="9" ry="5" fill="currentColor"/>
-      
-      <!-- 귀 -->
       <path d="M88 25 L90 20 L86 24 Z" fill="currentColor"/>
-      
-      <!-- 눈 -->
-      <circle cx="87" cy="29" r="0.8" fill="var(--bg-gradient)" opacity="0.6"/>
-      
-      <!-- 기수: 다리 -->
       <rect x="48" y="42" width="3" height="10" rx="1" fill="currentColor"/>
       <rect x="54" y="42" width="3" height="10" rx="1" fill="currentColor"/>
-      
-      <!-- 기수: 몸통 -->
       <path d="M48 30 L46 42 L60 42 L58 30 Z" fill="currentColor"/>
-      
-      <!-- 기수: 팔 (앞으로 뻗음) -->
       <rect x="56" y="32" width="2.5" height="9" rx="1" fill="currentColor" transform="rotate(-35 57 36)"/>
-      
-      <!-- 기수: 머리 -->
       <circle cx="53" cy="26" r="4.5" fill="currentColor"/>
-      
-      <!-- 기수: 모자/헬멧 챙 -->
       <ellipse cx="53" cy="22.5" rx="5.5" ry="1.5" fill="currentColor"/>
     </svg>
   </div>
 </div>
 
-<!-- 우측 상단 컨트롤: 언어 토글 + 테마 토글 -->
 <div class="controls">
-
   <div class="lang-toggle">
     <button class="lang-btn" data-lang-set="ko" id="langKo">KR</button>
     <span class="lang-divider">·</span>
     <button class="lang-btn" data-lang-set="en" id="langEn">EN</button>
   </div>
-
   <button class="theme-toggle toggle-sun-moon" id="toggleSunMoon" aria-label="Toggle theme">
     <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
       <circle cx="12" cy="12" r="4" fill="currentColor"/>
@@ -875,11 +890,9 @@
       <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>
     </svg>
   </button>
-
 </div>
 
 <div class="container">
-
   <header class="header">
     <div class="eyebrow">
       <span class="lang-ko">스튜디오</span>
@@ -901,7 +914,6 @@
       <span class="lang-en">Apps</span>
     </div>
     <div class="apps">
-
       <a href="/abak/" class="app-card">
         <div class="app-icon app-icon-image">
           <img src="/images/abak-logo.png" alt="Abak logo">
@@ -947,7 +959,6 @@
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
@@ -959,13 +970,24 @@
       <div class="copyright">© 2026 Ara-Kaya</div>
     </div>
   </footer>
-
 </div>
 
 <!-- ===== 음악 플레이어 ===== -->
-<audio id="bgm" src="music/Seureureuk.mp3" preload="auto" loop></audio>
+<audio id="bgm" src="music/Seureureuk.mp3" preload="auto"></audio>
 
 <div class="music-player" id="musicPlayer">
+  <!-- 드래그 핸들 -->
+  <div class="drag-handle" id="dragHandle" title="드래그하여 이동">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="9" cy="6" r="1.5"/>
+      <circle cx="15" cy="6" r="1.5"/>
+      <circle cx="9" cy="12" r="1.5"/>
+      <circle cx="15" cy="12" r="1.5"/>
+      <circle cx="9" cy="18" r="1.5"/>
+      <circle cx="15" cy="18" r="1.5"/>
+    </svg>
+  </div>
+
   <button class="play-btn" id="playBtn" aria-label="Play/Pause">
     <svg class="icon-play" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M8 5v14l11-7z"/>
@@ -974,6 +996,7 @@
       <path d="M6 4h4v16H6zM14 4h4v16h-4z"/>
     </svg>
   </button>
+
   <select class="track-select" id="trackSelect" aria-label="Select track">
     <option value="music/Seureureuk.mp3">Seureureuk</option>
     <option value="music/Dolphine.mp3">Dolphine</option>
@@ -984,9 +1007,19 @@
     <option value="music/253.mp3">Track 253</option>
     <option value="music/322.mp3">Track 322</option>
   </select>
-  <button class="next-btn" id="nextBtn" aria-label="Next track">
+
+  <button class="icon-btn" id="nextBtn" aria-label="Next track" data-tooltip="다음 곡">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M6 18l8.5-6L6 6v12zm9-12v12h2V6h-2z"/>
+    </svg>
+  </button>
+
+  <button class="icon-btn repeat-btn" id="repeatBtn" aria-label="Repeat mode" data-tooltip="전체 반복">
+    <svg class="repeat-all" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z"/>
+    </svg>
+    <svg class="repeat-one" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4zm-4-2V9h-1l-2 1v1h1.5v4H13z"/>
     </svg>
   </button>
 </div>
@@ -1061,42 +1094,154 @@
   const playBtn = document.getElementById('playBtn');
   const trackSelect = document.getElementById('trackSelect');
   const nextBtn = document.getElementById('nextBtn');
+  const repeatBtn = document.getElementById('repeatBtn');
+  const dragHandle = document.getElementById('dragHandle');
 
+  // 반복 모드: 'all' (전체 순환) 또는 'one' (한 곡 반복)
+  let repeatMode = localStorage.getItem('repeatMode') || 'all';
+  
+  function applyRepeatMode() {
+    if (repeatMode === 'one') {
+      bgm.loop = true;
+      repeatBtn.classList.add('active', 'repeat-one-mode');
+      repeatBtn.setAttribute('data-tooltip', '한 곡 반복');
+    } else {
+      bgm.loop = false;
+      repeatBtn.classList.remove('repeat-one-mode');
+      repeatBtn.classList.add('active');
+      repeatBtn.setAttribute('data-tooltip', '전체 반복');
+    }
+  }
+  applyRepeatMode();
+
+  repeatBtn.addEventListener('click', () => {
+    repeatMode = (repeatMode === 'all') ? 'one' : 'all';
+    localStorage.setItem('repeatMode', repeatMode);
+    applyRepeatMode();
+  });
+
+  // 재생/정지
   playBtn.addEventListener('click', () => {
     if (bgm.paused) {
       bgm.play().then(() => {
         musicPlayer.classList.add('playing');
-      }).catch(err => {
-        console.log('재생 실패:', err);
-      });
+      }).catch(err => console.log('재생 실패:', err));
     } else {
       bgm.pause();
       musicPlayer.classList.remove('playing');
     }
   });
 
+  // 트랙 변경
   trackSelect.addEventListener('change', (e) => {
     const wasPlaying = !bgm.paused;
     bgm.src = e.target.value;
     if (wasPlaying) {
-      bgm.play().then(() => {
-        musicPlayer.classList.add('playing');
-      });
+      bgm.play().then(() => musicPlayer.classList.add('playing'));
     }
   });
 
-  nextBtn.addEventListener('click', () => {
+  // 다음 곡
+  function playNext() {
     const currentIdx = trackSelect.selectedIndex;
     const nextIdx = (currentIdx + 1) % trackSelect.options.length;
     trackSelect.selectedIndex = nextIdx;
     bgm.src = trackSelect.value;
-    bgm.play().then(() => {
-      musicPlayer.classList.add('playing');
-    });
+    bgm.play().then(() => musicPlayer.classList.add('playing'));
+  }
+
+  nextBtn.addEventListener('click', playNext);
+
+  // 곡 끝났을 때 처리
+  bgm.addEventListener('ended', () => {
+    if (repeatMode === 'all') {
+      playNext();  // 전체 순환: 다음 곡 자동 재생
+    }
+    // repeatMode === 'one'일 때는 bgm.loop=true이므로 자동으로 같은 곡 반복됨
   });
 
   bgm.addEventListener('play', () => musicPlayer.classList.add('playing'));
   bgm.addEventListener('pause', () => musicPlayer.classList.remove('playing'));
+
+  // ===== 드래그로 플레이어 이동 =====
+  let isDragging = false;
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+
+  // 저장된 위치 복원
+  const savedPos = localStorage.getItem('playerPosition');
+  if (savedPos) {
+    try {
+      const pos = JSON.parse(savedPos);
+      musicPlayer.style.left = pos.left;
+      musicPlayer.style.top = pos.top;
+      musicPlayer.style.right = 'auto';
+      musicPlayer.style.bottom = 'auto';
+    } catch(e) {}
+  }
+
+  function startDrag(clientX, clientY) {
+    isDragging = true;
+    musicPlayer.classList.add('dragging');
+    const rect = musicPlayer.getBoundingClientRect();
+    dragOffsetX = clientX - rect.left;
+    dragOffsetY = clientY - rect.top;
+    // 초기 위치를 left/top으로 고정
+    musicPlayer.style.left = rect.left + 'px';
+    musicPlayer.style.top = rect.top + 'px';
+    musicPlayer.style.right = 'auto';
+    musicPlayer.style.bottom = 'auto';
+  }
+
+  function doDrag(clientX, clientY) {
+    if (!isDragging) return;
+    let newLeft = clientX - dragOffsetX;
+    let newTop = clientY - dragOffsetY;
+
+    // 화면 경계 제한
+    const rect = musicPlayer.getBoundingClientRect();
+    const maxLeft = window.innerWidth - rect.width;
+    const maxTop = window.innerHeight - rect.height;
+    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+    newTop = Math.max(0, Math.min(newTop, maxTop));
+
+    musicPlayer.style.left = newLeft + 'px';
+    musicPlayer.style.top = newTop + 'px';
+  }
+
+  function endDrag() {
+    if (!isDragging) return;
+    isDragging = false;
+    musicPlayer.classList.remove('dragging');
+    // 위치 저장
+    localStorage.setItem('playerPosition', JSON.stringify({
+      left: musicPlayer.style.left,
+      top: musicPlayer.style.top
+    }));
+  }
+
+  // 마우스 이벤트
+  dragHandle.addEventListener('mousedown', (e) => {
+    e.preventDefault();
+    startDrag(e.clientX, e.clientY);
+  });
+  document.addEventListener('mousemove', (e) => doDrag(e.clientX, e.clientY));
+  document.addEventListener('mouseup', endDrag);
+
+  // 터치 이벤트 (모바일)
+  dragHandle.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    const t = e.touches[0];
+    startDrag(t.clientX, t.clientY);
+  }, { passive: false });
+  document.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      e.preventDefault();
+      const t = e.touches[0];
+      doDrag(t.clientX, t.clientY);
+    }
+  }, { passive: false });
+  document.addEventListener('touchend', endDrag);
 </script>
 
 </body>

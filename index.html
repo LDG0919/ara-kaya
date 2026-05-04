@@ -138,6 +138,99 @@
     50% { transform: translateX(-25%); }
   }
 
+  /* ===== 달리는 기수 ===== */
+  .rider-track {
+    position: fixed;
+    bottom: 14vh;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .rider {
+    position: absolute;
+    bottom: 0;
+    left: -120px;
+    width: 100px;
+    height: 80px;
+    animation: gallop 7s linear infinite;
+    color: var(--text-secondary);
+    opacity: 0.85;
+    filter: drop-shadow(0 2px 4px rgba(74, 141, 184, 0.3));
+  }
+
+  [data-theme="dark"] .rider {
+    color: var(--accent-light);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(122, 181, 212, 0.7))
+            drop-shadow(0 0 16px rgba(255, 105, 180, 0.25));
+  }
+
+  @keyframes gallop {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(100vw + 240px)); }
+  }
+
+  .rider svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* 다리 움직임 */
+  .leg {
+    transform-origin: top center;
+    animation: legMove 0.22s linear infinite;
+  }
+
+  .leg-2 { animation-delay: 0.11s; }
+  .leg-3 { animation-delay: 0.05s; }
+  .leg-4 { animation-delay: 0.16s; }
+
+  @keyframes legMove {
+    0%, 100% { transform: rotate(-25deg) translateY(-2px); }
+    50% { transform: rotate(25deg) translateY(0); }
+  }
+
+  /* 갈기/꼬리 흔들림 */
+  .mane, .tail {
+    transform-origin: left center;
+    animation: flow 0.4s ease-in-out infinite alternate;
+  }
+
+  @keyframes flow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(8deg); }
+  }
+
+  /* 스피드 라인 */
+  .speed-line {
+    position: absolute;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+    opacity: 0;
+    animation: speedLine 0.5s linear infinite;
+  }
+
+  [data-theme="dark"] .speed-line {
+    background: linear-gradient(90deg, transparent, #ff69b4, var(--accent-light), transparent);
+  }
+
+  .speed-line-1 { top: 25%; width: 70px; animation-delay: 0s; }
+  .speed-line-2 { top: 45%; width: 90px; animation-delay: 0.15s; }
+  .speed-line-3 { top: 65%; width: 60px; animation-delay: 0.3s; }
+  .speed-line-4 { top: 80%; width: 80px; animation-delay: 0.4s; }
+
+  @keyframes speedLine {
+    0% { right: -100px; opacity: 0; }
+    20% { opacity: 0.7; }
+    80% { opacity: 0.5; }
+    100% { right: 110%; opacity: 0; }
+  }
+
   /* 우측 상단 컨트롤 영역 */
   .controls {
     position: fixed;
@@ -262,7 +355,7 @@
     margin: 0;
     padding: 100px 32px 60px 200px;
     position: relative;
-    z-index: 1;
+    z-index: 2;
   }
 
   .header {
@@ -452,7 +545,6 @@
     color: var(--text-tertiary);
   }
 
-  /* 준비중 - 클릭 가능하지만 미완 상태 시각화 */
   .app-card.in-progress {
     border-style: dashed;
     background: var(--coming-soon-bg);
@@ -670,6 +762,13 @@
       font-size: 12px;
       max-width: 100px;
     }
+    .rider-track {
+      bottom: 18vh;
+    }
+    .rider {
+      width: 70px;
+      height: 56px;
+    }
   }
 </style>
 </head>
@@ -691,6 +790,62 @@
   <div class="wave wave-3">
     <svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
       <path fill="var(--wave-3)" fill-opacity="0.6" d="M0,256L48,261.3C96,267,192,277,288,266.7C384,256,480,224,576,224C672,224,768,256,864,256C960,256,1056,224,1152,213.3C1248,203,1344,213,1392,218.7L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  </div>
+</div>
+
+<!-- ===== 달리는 기수 ===== -->
+<div class="rider-track">
+  <div class="speed-line speed-line-1"></div>
+  <div class="speed-line speed-line-2"></div>
+  <div class="speed-line speed-line-3"></div>
+  <div class="speed-line speed-line-4"></div>
+  <div class="rider">
+    <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+      <!-- 꼬리 -->
+      <path class="tail" d="M22 50 Q10 48 4 56 Q12 54 22 54 Z" fill="currentColor" opacity="0.75"/>
+      
+      <!-- 뒷다리 -->
+      <rect class="leg leg-3" x="30" y="55" width="3" height="20" rx="1" fill="currentColor"/>
+      <rect class="leg leg-4" x="36" y="55" width="3" height="20" rx="1" fill="currentColor"/>
+      
+      <!-- 말 몸통 -->
+      <ellipse cx="50" cy="50" rx="28" ry="10" fill="currentColor"/>
+      
+      <!-- 앞다리 -->
+      <rect class="leg leg-1" x="62" y="55" width="3" height="20" rx="1" fill="currentColor"/>
+      <rect class="leg leg-2" x="68" y="55" width="3" height="20" rx="1" fill="currentColor"/>
+      
+      <!-- 말 목 -->
+      <path d="M70 48 L80 30 L84 32 L74 50 Z" fill="currentColor"/>
+      
+      <!-- 갈기 -->
+      <path class="mane" d="M72 38 Q76 32 78 36 Q80 30 82 34 Q84 28 86 32 L82 40 Z" fill="currentColor" opacity="0.7"/>
+      
+      <!-- 말 머리 -->
+      <ellipse cx="84" cy="30" rx="9" ry="5" fill="currentColor"/>
+      
+      <!-- 귀 -->
+      <path d="M88 25 L90 20 L86 24 Z" fill="currentColor"/>
+      
+      <!-- 눈 -->
+      <circle cx="87" cy="29" r="0.8" fill="var(--bg-gradient)" opacity="0.6"/>
+      
+      <!-- 기수: 다리 -->
+      <rect x="48" y="42" width="3" height="10" rx="1" fill="currentColor"/>
+      <rect x="54" y="42" width="3" height="10" rx="1" fill="currentColor"/>
+      
+      <!-- 기수: 몸통 -->
+      <path d="M48 30 L46 42 L60 42 L58 30 Z" fill="currentColor"/>
+      
+      <!-- 기수: 팔 (앞으로 뻗음) -->
+      <rect x="56" y="32" width="2.5" height="9" rx="1" fill="currentColor" transform="rotate(-35 57 36)"/>
+      
+      <!-- 기수: 머리 -->
+      <circle cx="53" cy="26" r="4.5" fill="currentColor"/>
+      
+      <!-- 기수: 모자/헬멧 챙 -->
+      <ellipse cx="53" cy="22.5" rx="5.5" ry="1.5" fill="currentColor"/>
     </svg>
   </div>
 </div>
@@ -889,7 +1044,6 @@
     }
   }
 
-  // 저장된 언어 또는 브라우저 언어로 초기화
   const savedLang = localStorage.getItem('lang');
   if (savedLang) {
     setLang(savedLang);
@@ -908,8 +1062,6 @@
   const trackSelect = document.getElementById('trackSelect');
   const nextBtn = document.getElementById('nextBtn');
 
-
-  // 재생/정지
   playBtn.addEventListener('click', () => {
     if (bgm.paused) {
       bgm.play().then(() => {
@@ -923,7 +1075,6 @@
     }
   });
 
-  // 트랙 변경
   trackSelect.addEventListener('change', (e) => {
     const wasPlaying = !bgm.paused;
     bgm.src = e.target.value;
@@ -934,7 +1085,6 @@
     }
   });
 
-  // 다음 트랙
   nextBtn.addEventListener('click', () => {
     const currentIdx = trackSelect.selectedIndex;
     const nextIdx = (currentIdx + 1) % trackSelect.options.length;
@@ -945,7 +1095,6 @@
     });
   });
 
-  // 오디오 이벤트
   bgm.addEventListener('play', () => musicPlayer.classList.add('playing'));
   bgm.addEventListener('pause', () => musicPlayer.classList.remove('playing'));
 </script>

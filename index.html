@@ -45,7 +45,7 @@
     --wave-2: #1f4560;
     --wave-3: #163349;
     --coming-soon-bg: rgba(30, 58, 82, 0.2);
-    --particle-color: #a8d0e6;
+    --particle-color: #d8e4f0;
   }
 
   html, body {
@@ -63,7 +63,6 @@
     transition: background 0.6s ease, color 0.6s ease;
   }
 
-  /* 기존 트윙클 별 (배경 정적) */
   .stars {
     position: fixed;
     top: 0;
@@ -92,16 +91,24 @@
     50% { opacity: 1; transform: scale(1.2); }
   }
 
-  /* ===== 하이퍼스페이스 입자 (왼쪽으로 흐름) ===== */
+  /* ===== 흐르는 별 (언덕 뒤 하늘에서만) ===== */
   .hyperspace {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 60vh;
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, 
+      rgba(0,0,0,1) 0%, 
+      rgba(0,0,0,1) 70%, 
+      rgba(0,0,0,0) 100%);
+    mask-image: linear-gradient(to bottom, 
+      rgba(0,0,0,1) 0%, 
+      rgba(0,0,0,1) 70%, 
+      rgba(0,0,0,0) 100%);
   }
 
   .particle {
@@ -111,93 +118,48 @@
     will-change: transform;
   }
 
- /* 모든 입자: 가는 빛줄기 (꼬리가 본체) */
-  .particle {
-    position: absolute;
-    width: 60px;
-    height: 1px;
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      var(--particle-color) 70%, 
-      var(--particle-color) 100%);
-    border-radius: 0;
-    box-shadow: none;
-    will-change: transform;
-  }
-
-  /* 머리 부분의 작은 점 (앞쪽 끝) */
-  .particle::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: 0;
-    width: 2px;
-    height: 2px;
-    background: var(--particle-color);
-    border-radius: 50%;
-    transform: translateY(-50%);
-    box-shadow: 0 0 3px var(--particle-color);
-  }
-
-  /* 레이어별 속도/길이 */
   .layer-far .particle {
-    width: 30px;
-    opacity: 0.3;
-    animation: streamLeft 9s linear infinite;
-  }
-
-  .layer-far .particle::before {
-    width: 1.5px;
-    height: 1.5px;
+    width: 1px;
+    height: 1px;
+    opacity: 0.4;
+    animation: streamLeft 12s linear infinite;
   }
 
   .layer-mid .particle {
-    width: 60px;
-    opacity: 0.55;
-    animation: streamLeft 5s linear infinite;
+    width: 1.5px;
+    height: 1.5px;
+    opacity: 0.6;
+    animation: streamLeft 7s linear infinite;
   }
 
   .layer-near .particle {
-    width: 120px;
+    width: 2px;
+    height: 2px;
     opacity: 0.85;
-    animation: streamLeft 2.2s linear infinite;
-  }
-
-  .layer-near .particle::before {
-    width: 2.5px;
-    height: 2.5px;
-    box-shadow: 0 0 6px var(--particle-color),
-                0 0 12px var(--particle-color);
+    animation: streamLeft 4s linear infinite;
+    box-shadow: 0 0 2px var(--particle-color);
   }
 
   [data-theme="dark"] .layer-near .particle {
-    background: linear-gradient(90deg, 
-      transparent 0%, 
-      rgba(255, 105, 180, 0.4) 50%,
-      var(--particle-color) 90%, 
-      var(--particle-color) 100%);
-  }
-
-  [data-theme="dark"] .layer-near .particle::before {
-    box-shadow: 0 0 8px var(--particle-color),
-                0 0 16px rgba(255, 105, 180, 0.5);
+    box-shadow: 0 0 4px var(--particle-color);
   }
 
   @keyframes streamLeft {
     0% {
-      transform: translateX(calc(100vw + 120px));
+      transform: translateX(calc(100vw + 20px));
     }
     100% {
-      transform: translateX(-120px);
+      transform: translateX(-20px);
     }
   }
+
   .waves {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
-    z-index: 0;
+    z-index: 1;
     pointer-events: none;
     overflow: hidden;
   }
@@ -240,7 +202,6 @@
     50% { transform: translateX(-25%); }
   }
 
-  /* 우측 상단 컨트롤 영역 */
   .controls {
     position: fixed;
     top: 36px;
@@ -583,7 +544,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ===== 음악 플레이어 (드래그 가능) ===== */
+  /* ===== 음악 플레이어 ===== */
   .music-player {
     position: fixed;
     bottom: 32px;
@@ -802,7 +763,6 @@
 
 <div class="stars" id="stars"></div>
 
-<!-- ===== 하이퍼스페이스 입자 ===== -->
 <div class="hyperspace">
   <div class="layer-far" id="layerFar"></div>
   <div class="layer-mid" id="layerMid"></div>
@@ -931,7 +891,6 @@
   </footer>
 </div>
 
-<!-- ===== 음악 플레이어 ===== -->
 <audio id="bgm" src="music/Seureureuk.mp3" preload="auto"></audio>
 
 <div class="music-player" id="musicPlayer">
@@ -983,7 +942,6 @@
 </div>
 
 <script>
-  // ===== 트윙클 별 (배경 정적) =====
   const starsContainer = document.getElementById('stars');
   const starCount = 50;
   for (let i = 0; i < starCount; i++) {
@@ -999,26 +957,23 @@
     starsContainer.appendChild(star);
   }
 
-  // ===== 하이퍼스페이스 입자 =====
-  function createParticles(containerId, count) {
+  function createParticles(containerId, count, animDuration) {
     const container = document.getElementById(containerId);
     for (let i = 0; i < count; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
       p.style.top = Math.random() * 100 + '%';
-      p.style.animationDelay = -(Math.random() * 8) + 's';
+      p.style.animationDelay = -(Math.random() * animDuration) + 's';
       container.appendChild(p);
     }
   }
 
-  // 레이어별 입자 수 (깊이감 위해 다르게)
-  createParticles('layerFar', 40);   // 멀리 있는 별 - 작고 느림
-  createParticles('layerMid', 30);   // 중간
-  createParticles('layerNear', 15);  // 가까운 별 - 크고 빠르고 줄무늬
+  createParticles('layerFar', 50, 12);
+  createParticles('layerMid', 35, 7);
+  createParticles('layerNear', 20, 4);
 
   const html = document.documentElement;
 
-  // 테마 토글
   const toggleSunMoon = document.getElementById('toggleSunMoon');
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme) {
@@ -1035,7 +990,6 @@
   }
   toggleSunMoon.addEventListener('click', toggleTheme);
 
-  // 언어 토글
   const langKo = document.getElementById('langKo');
   const langEn = document.getElementById('langEn');
 
@@ -1063,7 +1017,6 @@
   langKo.addEventListener('click', () => setLang('ko'));
   langEn.addEventListener('click', () => setLang('en'));
 
-  // ===== 음악 플레이어 =====
   const bgm = document.getElementById('bgm');
   const musicPlayer = document.getElementById('musicPlayer');
   const playBtn = document.getElementById('playBtn');
@@ -1130,7 +1083,6 @@
   bgm.addEventListener('play', () => musicPlayer.classList.add('playing'));
   bgm.addEventListener('pause', () => musicPlayer.classList.remove('playing'));
 
-  // ===== 드래그로 플레이어 이동 =====
   let isDragging = false;
   let dragOffsetX = 0;
   let dragOffsetY = 0;

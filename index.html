@@ -213,7 +213,6 @@
     overflow: hidden;
   }
 
-  /* 파도 위쪽을 막는 불투명 배경 (별 통과 차단) */
   .waves::before {
     content: '';
     position: absolute;
@@ -916,8 +915,8 @@
             <span class="lang-en">Abak Crypto Futures Calculator</span>
           </div>
           <div class="app-desc">
-            <span class="lang-ko">암호화폐 선물·현물, 주식 현물 계산</span>
-            <span class="lang-en">calculator for crypto and stock markets</span>
+            <span class="lang-ko">암호화폐 선물·현물, 주식 현물 손익 계산</span>
+            <span class="lang-en">PnL calculator for crypto and stock markets</span>
           </div>
         </div>
         <div class="app-arrow">→</div>
@@ -991,11 +990,11 @@
     <option value="music/Seureureuk.mp3">Seureureuk</option>
     <option value="music/Dolphine.mp3">Dolphine</option>
     <option value="music/Knight.mp3">Knight</option>
-    <option value="music/Square1.mp3">Square 1</option>
-    <option value="music/Square2.mp3">Square 2</option>
+    <option value="music/Red Square1.mp3">Red Square 1</option>
+    <option value="music/Red Square2.mp3">Red Square 2</option>
     <option value="music/arcade.mp3">Arcade</option>
-    <option value="music/253.mp3">253</option>
-    <option value="music/322.mp3">322</option>
+    <option value="music/253.mp3">Track 253</option>
+    <option value="music/322.mp3">Track 322</option>
   </select>
 
   <button class="icon-btn" id="nextBtn" aria-label="Next track" data-tooltip="다음 곡">
@@ -1124,6 +1123,7 @@
   langKo.addEventListener('click', () => setLang('ko'));
   langEn.addEventListener('click', () => setLang('en'));
 
+  // ===== 음악 플레이어 =====
   const bgm = document.getElementById('bgm');
   const musicPlayer = document.getElementById('musicPlayer');
   const playBtn = document.getElementById('playBtn');
@@ -1133,6 +1133,57 @@
   const dragHandle = document.getElementById('dragHandle');
 
   document.body.classList.add('bgm-paused');
+
+  // ===== 페이지 이동 시 음악 이어재생 =====
+  const savedTrack = localStorage.getItem('currentTrack');
+  const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
+  const wasPlaying = localStorage.getItem('wasPlaying') === 'true';
+
+  if (savedTrack) {
+    // 드롭다운에 있는 곡인지 확인하고 일치시키기
+    let found = false;
+    for (let i = 0; i < trackSelect.options.length; i++) {
+      if (trackSelect.options[i].value === savedTrack || 
+          savedTrack.endsWith(trackSelect.options[i].value)) {
+        trackSelect.selectedIndex = i;
+        bgm.src = trackSelect.options[i].value;
+        found = true;
+        break;
+      }
+    }
+  }
+
+  bgm.addEventListener('loadedmetadata', () => {
+    if (savedTime > 0 && savedTime < bgm.duration) {
+      bgm.currentTime = savedTime;
+    }
+    if (wasPlaying) {
+      bgm.play().then(() => {
+        musicPlayer.classList.add('playing');
+        document.body.classList.remove('bgm-paused');
+      }).catch(() => {});
+    }
+  }, { once: true });
+
+  // 0.5초마다 현재 재생 시간 저장
+  setInterval(() => {
+    if (!bgm.paused) {
+      localStorage.setItem('currentTime', bgm.currentTime.toString());
+      localStorage.setItem('currentTrack', trackSelect.value);
+      localStorage.setItem('wasPlaying', 'true');
+    }
+  }, 500);
+
+  // 페이지 떠나기 직전에도 저장
+  window.addEventListener('beforeunload', () => {
+    if (!bgm.paused) {
+      localStorage.setItem('currentTime', bgm.currentTime.toString());
+      localStorage.setItem('currentTrack', trackSelect.value);
+      localStorage.setItem('wasPlaying', 'true');
+    } else {
+      localStorage.setItem('wasPlaying', 'false');
+    }
+  });
 
   let repeatMode = localStorage.getItem('repeatMode') || 'all';
   
@@ -1164,13 +1215,16 @@
     } else {
       bgm.pause();
       musicPlayer.classList.remove('playing');
+      localStorage.setItem('wasPlaying', 'false');
     }
   });
 
   trackSelect.addEventListener('change', (e) => {
-    const wasPlaying = !bgm.paused;
+    const wasP = !bgm.paused;
     bgm.src = e.target.value;
-    if (wasPlaying) {
+    localStorage.setItem('currentTrack', e.target.value);
+    localStorage.setItem('currentTime', '0');
+    if (wasP) {
       bgm.play().then(() => musicPlayer.classList.add('playing'));
     }
   });
@@ -1180,6 +1234,8 @@
     const nextIdx = (currentIdx + 1) % trackSelect.options.length;
     trackSelect.selectedIndex = nextIdx;
     bgm.src = trackSelect.value;
+    localStorage.setItem('currentTrack', trackSelect.value);
+    localStorage.setItem('currentTime', '0');
     bgm.play().then(() => musicPlayer.classList.add('playing'));
   }
 

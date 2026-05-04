@@ -28,7 +28,6 @@
     --wave-2: #5a9bc4;
     --wave-3: #4a8db8;
     --coming-soon-bg: rgba(255, 255, 255, 0.4);
-    --particle-color: #4a8db8;
   }
 
   [data-theme="dark"] {
@@ -45,7 +44,6 @@
     --wave-2: #1f4560;
     --wave-3: #163349;
     --coming-soon-bg: rgba(30, 58, 82, 0.2);
-    --particle-color: #d8e4f0;
   }
 
   html, body {
@@ -91,7 +89,7 @@
     50% { opacity: 1; transform: scale(1.2); }
   }
 
-  /* ===== 흐르는 별 (언덕 뒤 하늘에서만) ===== */
+  /* ===== 흐르는 요소 (라이트=구름, 다크=별) ===== */
   .hyperspace {
     position: fixed;
     top: 0;
@@ -111,11 +109,60 @@
       rgba(0,0,0,0) 100%);
   }
 
+  /* ===== 라이트모드: 구름 ===== */
+  .cloud {
+    position: absolute;
+    will-change: transform;
+    filter: blur(2px);
+  }
+
+  .cloud-svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .cloud-path {
+    fill: #ffffff;
+  }
+
+  [data-theme="dark"] .clouds-container {
+    display: none;
+  }
+
+  .layer-cloud-far .cloud {
+    width: 80px;
+    height: 30px;
+    opacity: 0.5;
+    animation: streamLeft 60s linear infinite;
+  }
+
+  .layer-cloud-mid .cloud {
+    width: 130px;
+    height: 45px;
+    opacity: 0.65;
+    animation: streamLeft 40s linear infinite;
+  }
+
+  .layer-cloud-near .cloud {
+    width: 200px;
+    height: 70px;
+    opacity: 0.85;
+    animation: streamLeft 25s linear infinite;
+    filter: blur(1px) drop-shadow(0 4px 12px rgba(74, 141, 184, 0.15));
+  }
+
+  /* ===== 다크모드: 별 ===== */
   .particle {
     position: absolute;
-    background: var(--particle-color);
+    background: #d8e4f0;
     border-radius: 50%;
     will-change: transform;
+  }
+
+  [data-theme="light"] .stars-container,
+  :root:not([data-theme="dark"]) .stars-container {
+    display: none;
   }
 
   .layer-far .particle {
@@ -137,19 +184,15 @@
     height: 2px;
     opacity: 0.85;
     animation: streamLeft 4s linear infinite;
-    box-shadow: 0 0 2px var(--particle-color);
-  }
-
-  [data-theme="dark"] .layer-near .particle {
-    box-shadow: 0 0 4px var(--particle-color);
+    box-shadow: 0 0 4px #d8e4f0;
   }
 
   @keyframes streamLeft {
     0% {
-      transform: translateX(calc(100vw + 20px));
+      transform: translateX(calc(100vw + 250px));
     }
     100% {
-      transform: translateX(-20px);
+      transform: translateX(-250px);
     }
   }
 
@@ -764,9 +807,18 @@
 <div class="stars" id="stars"></div>
 
 <div class="hyperspace">
-  <div class="layer-far" id="layerFar"></div>
-  <div class="layer-mid" id="layerMid"></div>
-  <div class="layer-near" id="layerNear"></div>
+  <!-- 라이트모드용: 구름 -->
+  <div class="clouds-container">
+    <div class="layer-cloud-far" id="layerCloudFar"></div>
+    <div class="layer-cloud-mid" id="layerCloudMid"></div>
+    <div class="layer-cloud-near" id="layerCloudNear"></div>
+  </div>
+  <!-- 다크모드용: 별 -->
+  <div class="stars-container">
+    <div class="layer-far" id="layerFar"></div>
+    <div class="layer-mid" id="layerMid"></div>
+    <div class="layer-near" id="layerNear"></div>
+  </div>
 </div>
 
 <div class="waves">
@@ -942,6 +994,7 @@
 </div>
 
 <script>
+  // 트윙클 별 (배경 정적, 다크모드만)
   const starsContainer = document.getElementById('stars');
   const starCount = 50;
   for (let i = 0; i < starCount; i++) {
@@ -957,6 +1010,7 @@
     starsContainer.appendChild(star);
   }
 
+  // 다크모드: 흐르는 별 입자
   function createParticles(containerId, count, animDuration) {
     const container = document.getElementById(containerId);
     for (let i = 0; i < count; i++) {
@@ -967,10 +1021,44 @@
       container.appendChild(p);
     }
   }
-
   createParticles('layerFar', 50, 12);
   createParticles('layerMid', 35, 7);
   createParticles('layerNear', 20, 4);
+
+  // 라이트모드: 흐르는 구름
+  // 구름 모양 SVG - 5가지 변형
+  const cloudShapes = [
+    `<svg class="cloud-svg" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
+      <path class="cloud-path" d="M40,55 C20,55 15,40 25,32 C25,20 40,15 50,22 C55,10 80,12 85,25 C100,18 120,25 120,38 C140,32 155,42 150,55 Z"/>
+    </svg>`,
+    `<svg class="cloud-svg" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
+      <path class="cloud-path" d="M30,55 C15,55 10,42 20,35 C18,22 35,18 45,25 C50,12 75,15 80,28 C95,22 115,28 118,42 C135,38 150,48 145,58 Z"/>
+    </svg>`,
+    `<svg class="cloud-svg" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
+      <path class="cloud-path" d="M50,58 C30,58 22,45 32,38 C30,25 48,20 58,28 C65,15 88,18 92,32 C108,25 128,32 130,45 C148,42 160,52 155,60 Z"/>
+    </svg>`,
+    `<svg class="cloud-svg" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
+      <path class="cloud-path" d="M35,55 C18,55 12,40 22,33 C20,18 38,12 50,20 C58,8 82,10 88,23 C105,18 122,25 125,40 C142,35 158,45 152,57 Z"/>
+    </svg>`,
+    `<svg class="cloud-svg" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
+      <path class="cloud-path" d="M45,55 C25,55 18,42 28,35 C26,22 45,18 55,25 C62,15 85,18 90,30 C105,25 125,32 128,45 C145,42 158,52 152,58 Z"/>
+    </svg>`
+  ];
+
+  function createClouds(containerId, count, animDuration) {
+    const container = document.getElementById(containerId);
+    for (let i = 0; i < count; i++) {
+      const c = document.createElement('div');
+      c.className = 'cloud';
+      c.style.top = Math.random() * 100 + '%';
+      c.style.animationDelay = -(Math.random() * animDuration) + 's';
+      c.innerHTML = cloudShapes[Math.floor(Math.random() * cloudShapes.length)];
+      container.appendChild(c);
+    }
+  }
+  createClouds('layerCloudFar', 5, 60);
+  createClouds('layerCloudMid', 4, 40);
+  createClouds('layerCloudNear', 3, 25);
 
   const html = document.documentElement;
 
@@ -980,6 +1068,8 @@
     html.setAttribute('data-theme', savedTheme);
   } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     html.setAttribute('data-theme', 'dark');
+  } else {
+    html.setAttribute('data-theme', 'light');
   }
 
   function toggleTheme() {

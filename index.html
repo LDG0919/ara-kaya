@@ -808,7 +808,7 @@
 </div>
 
 <!-- ===== 음악 플레이어 ===== -->
-<audio id="bgm" loop></audio>
+<audio id="bgm" src="music/Seureureuk.mp3" preload="auto" loop></audio>
 
 <div class="music-player" id="musicPlayer">
   <button class="play-btn" id="playBtn" aria-label="Play/Pause">
@@ -908,8 +908,6 @@
   const trackSelect = document.getElementById('trackSelect');
   const nextBtn = document.getElementById('nextBtn');
 
-  // 초기 트랙 설정
-  bgm.src = trackSelect.value;
 
   // 재생/정지
   playBtn.addEventListener('click', () => {

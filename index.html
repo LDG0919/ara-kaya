@@ -111,80 +111,86 @@
     will-change: transform;
   }
 
-  /* 레이어 1: 가장 먼 별 (작고 느림) */
-  .layer-far .particle {
-    width: 1.5px;
-    height: 1.5px;
-    opacity: 0.4;
-    animation: streamLeft 8s linear infinite;
+ /* 모든 입자: 가는 빛줄기 (꼬리가 본체) */
+  .particle {
+    position: absolute;
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      var(--particle-color) 70%, 
+      var(--particle-color) 100%);
+    border-radius: 0;
+    box-shadow: none;
+    will-change: transform;
   }
 
-  /* 레이어 2: 중간 거리 (보통) */
-  .layer-mid .particle {
-    width: 2px;
-    height: 2px;
-    opacity: 0.6;
-    animation: streamLeft 5s linear infinite;
-  }
-
-  /* 레이어 3: 가까운 별 (크고 빠름, 줄무늬) */
-  .layer-near .particle {
-    width: 3px;
-    height: 3px;
-    opacity: 0.85;
-    animation: streamLeftStreak 2.5s linear infinite;
-    box-shadow: 0 0 4px var(--particle-color);
-  }
-
-  [data-theme="dark"] .layer-near .particle {
-    box-shadow: 0 0 6px var(--particle-color),
-                0 0 12px rgba(122, 181, 212, 0.4);
-  }
-
-  /* 줄무늬 효과 (가까운 별만) */
-  .layer-near .particle::after {
+  /* 머리 부분의 작은 점 (앞쪽 끝) */
+  .particle::before {
     content: '';
     position: absolute;
     top: 50%;
-    left: 100%;
-    width: 40px;
-    height: 1px;
-    background: linear-gradient(90deg, var(--particle-color), transparent);
+    right: 0;
+    width: 2px;
+    height: 2px;
+    background: var(--particle-color);
+    border-radius: 50%;
     transform: translateY(-50%);
-    opacity: 0.6;
+    box-shadow: 0 0 3px var(--particle-color);
   }
 
-  [data-theme="dark"] .layer-near .particle::after {
+  /* 레이어별 속도/길이 */
+  .layer-far .particle {
+    width: 30px;
+    opacity: 0.3;
+    animation: streamLeft 9s linear infinite;
+  }
+
+  .layer-far .particle::before {
+    width: 1.5px;
+    height: 1.5px;
+  }
+
+  .layer-mid .particle {
     width: 60px;
-    background: linear-gradient(90deg, var(--particle-color), rgba(255, 105, 180, 0.3), transparent);
+    opacity: 0.55;
+    animation: streamLeft 5s linear infinite;
+  }
+
+  .layer-near .particle {
+    width: 120px;
+    opacity: 0.85;
+    animation: streamLeft 2.2s linear infinite;
+  }
+
+  .layer-near .particle::before {
+    width: 2.5px;
+    height: 2.5px;
+    box-shadow: 0 0 6px var(--particle-color),
+                0 0 12px var(--particle-color);
+  }
+
+  [data-theme="dark"] .layer-near .particle {
+    background: linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 105, 180, 0.4) 50%,
+      var(--particle-color) 90%, 
+      var(--particle-color) 100%);
+  }
+
+  [data-theme="dark"] .layer-near .particle::before {
+    box-shadow: 0 0 8px var(--particle-color),
+                0 0 16px rgba(255, 105, 180, 0.5);
   }
 
   @keyframes streamLeft {
     0% {
-      transform: translateX(calc(100vw + 50px));
+      transform: translateX(calc(100vw + 120px));
     }
     100% {
-      transform: translateX(-50px);
+      transform: translateX(-120px);
     }
   }
-
-  @keyframes streamLeftStreak {
-    0% {
-      transform: translateX(calc(100vw + 80px));
-      opacity: 0;
-    }
-    10% {
-      opacity: 0.85;
-    }
-    90% {
-      opacity: 0.85;
-    }
-    100% {
-      transform: translateX(-80px);
-      opacity: 0;
-    }
-  }
-
   .waves {
     position: fixed;
     top: 0;

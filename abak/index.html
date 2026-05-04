@@ -821,13 +821,10 @@
 
   // 저장된 곡/위치/재생상태 복원
   const savedTrack = localStorage.getItem('currentTrack');
-  const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
-  const wasPlaying = localStorage.getItem('wasPlaying') === 'true';
 
   // 드롭다운에서 일치하는 곡 찾기
   function findTrackOption(savedSrc) {
     if (!savedSrc) return null;
-    // 파일명만 추출해서 매칭
     const savedFile = savedSrc.split('/').pop();
     for (let i = 0; i < trackSelect.options.length; i++) {
       const optFile = trackSelect.options[i].value.split('/').pop();
@@ -842,34 +839,54 @@
   }
   bgm.src = trackSelect.value;
 
+  // loadedmetadata: 일반(풀)로드 시 이어재생
   bgm.addEventListener('loadedmetadata', () => {
-    if (savedTime > 0 && savedTime < bgm.duration) {
-      bgm.currentTime = savedTime;
+    const t = parseFloat(localStorage.getItem('currentTime') || '0');
+    if (t > 0 && t < bgm.duration) {
+      bgm.currentTime = t;
     }
-    if (wasPlaying) {
+    if (localStorage.getItem('wasPlaying') === 'true') {
       bgm.play().then(() => {
         musicPlayer.classList.add('playing');
         document.body.classList.remove('bgm-paused');
       }).catch(() => {});
     }
-  }, { once: true });
+  });
 
-  // 0.5초마다 현재 재생 시간 저장
-  setInterval(() => {
+  // timeupdate: 브라우저가 ~250ms마다 자동 발생 (setInterval보다 효율적)
+  bgm.addEventListener('timeupdate', () => {
     if (!bgm.paused) {
       localStorage.setItem('currentTime', bgm.currentTime.toString());
       localStorage.setItem('currentTrack', trackSelect.value);
       localStorage.setItem('wasPlaying', 'true');
     }
-  }, 500);
+  });
 
-  window.addEventListener('beforeunload', () => {
+  // pagehide: beforeunload보다 bfcache 친화적
+  window.addEventListener('pagehide', () => {
     if (!bgm.paused) {
       localStorage.setItem('currentTime', bgm.currentTime.toString());
       localStorage.setItem('currentTrack', trackSelect.value);
       localStorage.setItem('wasPlaying', 'true');
     } else {
       localStorage.setItem('wasPlaying', 'false');
+    }
+  });
+
+  // pageshow: bfcache 복원 시 호출됨
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      // bfcache로 복원됨 — 오디오가 일시정지된 상태로 살아있을 수 있음
+      if (localStorage.getItem('wasPlaying') === 'true' && bgm.paused) {
+        const t = parseFloat(localStorage.getItem('currentTime') || '0');
+        if (t > 0 && bgm.duration && t < bgm.duration) {
+          bgm.currentTime = t;
+        }
+        bgm.play().then(() => {
+          musicPlayer.classList.add('playing');
+          document.body.classList.remove('bgm-paused');
+        }).catch(() => {});
+      }
     }
   });
 

@@ -109,7 +109,7 @@
       rgba(0,0,0,0) 100%);
   }
 
-  /* ===== 라이트모드: 구름 ===== */
+  /* 라이트모드: 구름 */
   .cloud {
     position: absolute;
     will-change: transform;
@@ -152,7 +152,7 @@
     filter: blur(1px) drop-shadow(0 4px 12px rgba(74, 141, 184, 0.15));
   }
 
-  /* ===== 다크모드: 별 ===== */
+  /* 다크모드: 별 */
   .particle {
     position: absolute;
     background: #d8e4f0;
@@ -185,6 +185,16 @@
     opacity: 0.85;
     animation: streamLeft 4s linear infinite;
     box-shadow: 0 0 4px #d8e4f0;
+  }
+
+  /* ===== 음악 멈췄을 때 모든 배경 애니메이션 정지 ===== */
+  body.bgm-paused .particle,
+  body.bgm-paused .cloud,
+  body.bgm-paused .wave-1,
+  body.bgm-paused .wave-2,
+  body.bgm-paused .wave-3,
+  body.bgm-paused .star {
+    animation-play-state: paused;
   }
 
   @keyframes streamLeft {
@@ -807,13 +817,11 @@
 <div class="stars" id="stars"></div>
 
 <div class="hyperspace">
-  <!-- 라이트모드용: 구름 -->
   <div class="clouds-container">
     <div class="layer-cloud-far" id="layerCloudFar"></div>
     <div class="layer-cloud-mid" id="layerCloudMid"></div>
     <div class="layer-cloud-near" id="layerCloudNear"></div>
   </div>
-  <!-- 다크모드용: 별 -->
   <div class="stars-container">
     <div class="layer-far" id="layerFar"></div>
     <div class="layer-mid" id="layerMid"></div>
@@ -994,7 +1002,7 @@
 </div>
 
 <script>
-  // 트윙클 별 (배경 정적, 다크모드만)
+  // 트윙클 별
   const starsContainer = document.getElementById('stars');
   const starCount = 50;
   for (let i = 0; i < starCount; i++) {
@@ -1010,7 +1018,7 @@
     starsContainer.appendChild(star);
   }
 
-  // 다크모드: 흐르는 별 입자
+  // 흐르는 별
   function createParticles(containerId, count, animDuration) {
     const container = document.getElementById(containerId);
     for (let i = 0; i < count; i++) {
@@ -1025,8 +1033,7 @@
   createParticles('layerMid', 35, 7);
   createParticles('layerNear', 20, 4);
 
-  // 라이트모드: 흐르는 구름
-  // 구름 모양 SVG - 5가지 변형
+  // 흐르는 구름
   const cloudShapes = [
     `<svg class="cloud-svg" viewBox="0 0 200 70" xmlns="http://www.w3.org/2000/svg">
       <path class="cloud-path" d="M40,55 C20,55 15,40 25,32 C25,20 40,15 50,22 C55,10 80,12 85,25 C100,18 120,25 120,38 C140,32 155,42 150,55 Z"/>
@@ -1062,6 +1069,7 @@
 
   const html = document.documentElement;
 
+  // 테마 토글
   const toggleSunMoon = document.getElementById('toggleSunMoon');
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme) {
@@ -1080,6 +1088,7 @@
   }
   toggleSunMoon.addEventListener('click', toggleTheme);
 
+  // 언어 토글
   const langKo = document.getElementById('langKo');
   const langEn = document.getElementById('langEn');
 
@@ -1107,6 +1116,7 @@
   langKo.addEventListener('click', () => setLang('ko'));
   langEn.addEventListener('click', () => setLang('en'));
 
+  // 음악 플레이어
   const bgm = document.getElementById('bgm');
   const musicPlayer = document.getElementById('musicPlayer');
   const playBtn = document.getElementById('playBtn');
@@ -1114,6 +1124,9 @@
   const nextBtn = document.getElementById('nextBtn');
   const repeatBtn = document.getElementById('repeatBtn');
   const dragHandle = document.getElementById('dragHandle');
+
+  // 처음엔 모든 배경 정지 상태로 시작
+  document.body.classList.add('bgm-paused');
 
   let repeatMode = localStorage.getItem('repeatMode') || 'all';
   
@@ -1170,9 +1183,17 @@
     if (repeatMode === 'all') playNext();
   });
 
-  bgm.addEventListener('play', () => musicPlayer.classList.add('playing'));
-  bgm.addEventListener('pause', () => musicPlayer.classList.remove('playing'));
+  // 음악 재생/정지에 따라 배경 같이 움직임
+  bgm.addEventListener('play', () => {
+    musicPlayer.classList.add('playing');
+    document.body.classList.remove('bgm-paused');
+  });
+  bgm.addEventListener('pause', () => {
+    musicPlayer.classList.remove('playing');
+    document.body.classList.add('bgm-paused');
+  });
 
+  // 드래그
   let isDragging = false;
   let dragOffsetX = 0;
   let dragOffsetY = 0;

@@ -964,7 +964,8 @@
   </footer>
 </div>
 
-<audio id="bgm" src="music/Seureureuk.mp3" preload="auto"></audio>
+<!-- ⬇️ src 속성 제거: 페이지 로드 시 0초부터 자동 로드되는 것을 막음 -->
+<audio id="bgm" preload="auto"></audio>
 
 <div class="music-player" id="musicPlayer">
   <div class="drag-handle" id="dragHandle" title="드래그하여 이동">
@@ -1143,21 +1144,31 @@
 
   document.body.classList.add('bgm-paused');
 
-  // ===== 페이지 이동 시 음악 이어재생 =====
+  // ===== 페이지 이동 시 음악 이어재생 (abak/index.html과 통일된 방식) =====
   const savedTrack = localStorage.getItem('currentTrack');
-  const savedTime = parseFloat(localStorage.getItem('currentTime') || '0');
-  const wasPlaying = localStorage.getItem('wasPlaying') === 'true';
 
-  if (savedTrack) {
-    // 드롭다운에 있는 곡인지 확인하고 일치시키기
+  // 드롭다운에서 일치하는 곡 찾기 (파일명만 비교 → 절대/상대경로 무관)
+  function findTrackOption(savedSrc) {
+    if (!savedSrc) return null;
+    const savedFile = savedSrc.split('/').pop();
     for (let i = 0; i < trackSelect.options.length; i++) {
-      if (trackSelect.options[i].value === savedTrack || 
-          savedTrack.endsWith(trackSelect.options[i].value)) {
-        trackSelect.selectedIndex = i;
-        bgm.src = trackSelect.options[i].value;
-        break;
-      }
+      const optFile = trackSelect.options[i].value.split('/').pop();
+      if (optFile === savedFile) return i;
     }
+    return null;
+  }
+
+  const matchIdx = findTrackOption(savedTrack);
+  if (matchIdx !== null) {
+    trackSelect.selectedIndex = matchIdx;
+  }
+
+  // ⚠️ 핵심: 현재 src와 다를 때만 설정 (같은 src 재할당해도 브라우저는 처음부터 다시 로드함)
+  const targetSrc = trackSelect.value;
+  const currentFile = bgm.src ? bgm.src.split('/').pop() : '';
+  const targetFile = targetSrc.split('/').pop();
+  if (currentFile !== targetFile) {
+    bgm.src = targetSrc;
   }
 
   // 자동재생 차단 시 다음 사용자 인터랙션에 재생하는 헬퍼

@@ -633,10 +633,13 @@
 
   <div class="app-header">
     <div class="app-header-icon app-header-icon-image">
-      <img src="/images/abak-logo.png" alt="Abak logo">
+      <img src="/images/abak-logo.png" alt="App logo">
     </div>
     <div class="app-header-text">
-      <h1>Abak</h1>
+      <h1>
+        <span class="lang-ko">셈잡이</span>
+        <span class="lang-en">Abak</span>
+      </h1>
       <div class="app-tagline">
         <span class="lang-ko">손익 계산기</span>
         <span class="lang-en">Crypto &amp; Stock Calculator</span>
@@ -809,6 +812,8 @@
     localStorage.setItem('lang', lang);
     langKo.classList.toggle('active', lang === 'ko');
     langEn.classList.toggle('active', lang === 'en');
+    // 페이지 타이틀도 언어에 맞게 변경
+    document.title = (lang === 'ko') ? '셈잡이 — Ara-Kaya' : 'Abak — Ara-Kaya';
   }
   const savedLang = localStorage.getItem('lang');
   if (savedLang) setLang(savedLang);

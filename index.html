@@ -906,6 +906,7 @@
       <span class="lang-en">Apps</span>
     </div>
     <div class="apps">
+
       <a href="/abak/" class="app-card">
         <div class="app-icon app-icon-image">
           <img src="/images/abak-logo.png" alt="Abak logo">
@@ -940,6 +941,24 @@
         <div class="app-arrow">→</div>
       </a>
 
+      <!-- ✅ Ledger 카드 추가 -->
+      <a href="/Ledger/" class="app-card">
+        <div class="app-icon app-icon-image">
+          <img src="/images/Ledger-icon.png" alt="Ledger logo">
+        </div>
+        <div class="app-info">
+          <div class="app-name">
+            <span class="lang-ko">Ledger — 가계부, 장부</span>
+            <span class="lang-en">Ledger — Finance &amp; Bookkeeping</span>
+          </div>
+          <div class="app-desc">
+            <span class="lang-ko">수입·지출 기록, 예산 관리</span>
+            <span class="lang-en">Track income, expenses &amp; budgets</span>
+          </div>
+        </div>
+        <div class="app-arrow">→</div>
+      </a>
+
       <div class="app-card coming-soon">
         <div class="app-icon"></div>
         <div class="app-info">
@@ -953,6 +972,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -966,7 +986,6 @@
   </footer>
 </div>
 
-<!-- ⬇️ src 속성 제거: 페이지 로드 시 0초부터 자동 로드되는 것을 막음 -->
 <audio id="bgm" preload="auto"></audio>
 
 <div class="music-player" id="musicPlayer">
@@ -1134,7 +1153,6 @@
   langKo.addEventListener('click', () => setLang('ko'));
   langEn.addEventListener('click', () => setLang('en'));
 
-  // ===== 음악 플레이어 =====
   const bgm = document.getElementById('bgm');
   const musicPlayer = document.getElementById('musicPlayer');
   const playBtn = document.getElementById('playBtn');
@@ -1145,10 +1163,8 @@
 
   document.body.classList.add('bgm-paused');
 
-  // ===== 페이지 이동 시 음악 이어재생 (abak/index.html과 통일된 방식) =====
   const savedTrack = localStorage.getItem('currentTrack');
 
-  // 드롭다운에서 일치하는 곡 찾기 (파일명만 비교 → 절대/상대경로 무관)
   function findTrackOption(savedSrc) {
     if (!savedSrc) return null;
     const savedFile = savedSrc.split('/').pop();
@@ -1164,7 +1180,6 @@
     trackSelect.selectedIndex = matchIdx;
   }
 
-  // ⚠️ 핵심: 현재 src와 다를 때만 설정 (같은 src 재할당해도 브라우저는 처음부터 다시 로드함)
   const targetSrc = trackSelect.value;
   const currentFile = bgm.src ? bgm.src.split('/').pop() : '';
   const targetFile = targetSrc.split('/').pop();
@@ -1172,7 +1187,6 @@
     bgm.src = targetSrc;
   }
 
-  // 자동재생 차단 시 다음 사용자 인터랙션에 재생하는 헬퍼
   function setupResumeOnInteraction() {
     const resumeOnce = () => {
       if (bgm.paused && localStorage.getItem('wasPlaying') === 'true') {
@@ -1190,7 +1204,6 @@
     document.addEventListener('keydown', resumeOnce, { once: true });
   }
 
-  // loadedmetadata: 일반(풀)로드 시 이어재생
   bgm.addEventListener('loadedmetadata', () => {
     const t = parseFloat(localStorage.getItem('currentTime') || '0');
     if (t > 0 && t < bgm.duration) {
@@ -1201,13 +1214,11 @@
         musicPlayer.classList.add('playing');
         document.body.classList.remove('bgm-paused');
       }).catch(() => {
-        // 자동재생 차단됨 → 다음 사용자 인터랙션에 재생
         setupResumeOnInteraction();
       });
     }
   });
 
-  // timeupdate: 브라우저가 ~250ms마다 자동 발생 (setInterval보다 효율적)
   bgm.addEventListener('timeupdate', () => {
     if (!bgm.paused) {
       localStorage.setItem('currentTime', bgm.currentTime.toString());
@@ -1216,7 +1227,6 @@
     }
   });
 
-  // pagehide: beforeunload보다 bfcache 친화적
   window.addEventListener('pagehide', () => {
     if (!bgm.paused) {
       localStorage.setItem('currentTime', bgm.currentTime.toString());
@@ -1227,21 +1237,17 @@
     }
   });
 
-  // pageshow: bfcache 복원 시 호출됨 (event.persisted === true)
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
-      // bfcache로 복원됨 — 오디오가 일시정지된 상태로 살아있을 수 있음
       if (localStorage.getItem('wasPlaying') === 'true' && bgm.paused) {
         const t = parseFloat(localStorage.getItem('currentTime') || '0');
         if (t > 0 && bgm.duration && t < bgm.duration) {
           bgm.currentTime = t;
         }
-        // 1차: 바로 재생 시도
         bgm.play().then(() => {
           musicPlayer.classList.add('playing');
           document.body.classList.remove('bgm-paused');
         }).catch(() => {
-          // 자동재생 차단됨 → 다음 사용자 인터랙션에 재생
           setupResumeOnInteraction();
         });
       }

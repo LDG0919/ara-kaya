@@ -69,7 +69,6 @@
     50% { opacity: 1; transform: scale(1.2); }
   }
 
-  /* 음악 멈췄을 때 모든 배경 정지 */
   body.bgm-paused .wave-1,
   body.bgm-paused .wave-2,
   body.bgm-paused .wave-3,
@@ -155,11 +154,7 @@
     opacity: 0;
     animation: fadeUp 0.8s ease-out 0.1s forwards;
   }
-
-  .back-link:hover {
-    color: var(--accent);
-    gap: 12px;
-  }
+  .back-link:hover { color: var(--accent); gap: 12px; }
 
   .app-header {
     display: flex;
@@ -171,325 +166,86 @@
   }
 
   .app-header-icon {
-    width: 80px;
-    height: 80px;
-    border-radius: 20px;
+    width: 80px; height: 80px; border-radius: 20px;
     background: linear-gradient(135deg, #7ab5d4, #4a8db8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 32px;
-    letter-spacing: -1px;
-    flex-shrink: 0;
-    box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.3);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 600; font-size: 32px; letter-spacing: -1px;
+    flex-shrink: 0; box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.3);
     overflow: hidden;
   }
-
-  .app-header-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+  .app-header-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   .app-header-text h1 {
-    font-size: clamp(28px, 5vw, 36px);
-    font-weight: 500;
-    letter-spacing: -1px;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-    line-height: 1.2;
+    font-size: clamp(28px, 5vw, 36px); font-weight: 500;
+    letter-spacing: -1px; color: var(--text-primary);
+    margin-bottom: 4px; line-height: 1.2;
   }
-
-  .app-header-text .app-tagline {
-    font-size: 14px;
-    color: var(--text-tertiary);
-  }
+  .app-header-text .app-tagline { font-size: 14px; color: var(--text-tertiary); }
 
   .description {
-    font-size: 16px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.4s forwards;
-  }
-
-  /* 비공개 테스트 안내 박스 */
-  .testing-notice {
-    background: var(--card-bg);
-    border: 0.5px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 12px;
-    padding: 18px 22px;
-    margin-bottom: 48px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.45s forwards;
-  }
-
-  .testing-notice-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-
-  .testing-notice-text {
-    font-size: 14.5px;
-    color: var(--text-secondary);
-    line-height: 1.6;
+    font-size: 16px; color: var(--text-secondary);
+    line-height: 1.7; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 1s ease-out 0.4s forwards;
   }
 
   .at-a-glance {
     margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.5s forwards;
+    opacity: 0; animation: fadeUp 1s ease-out 0.5s forwards;
   }
 
-  .glance-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 14px;
-  }
+  .glance-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
 
   .glance-item {
-    background: var(--card-bg);
-    border: 0.5px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 20px;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: var(--card-bg); border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   }
-
   .glance-num {
-    font-size: 24px;
-    font-weight: 600;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-    margin-bottom: 4px;
-    line-height: 1.2;
+    font-size: 24px; font-weight: 600; color: var(--accent);
+    letter-spacing: -0.5px; margin-bottom: 4px; line-height: 1.2;
   }
-
-  .glance-label {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    line-height: 1.4;
-  }
+  .glance-label { font-size: 13px; color: var(--text-tertiary); line-height: 1.4; }
 
   .features {
     margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.55s forwards;
+    opacity: 0; animation: fadeUp 1s ease-out 0.55s forwards;
   }
 
   .section-label {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-tertiary);
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
+    font-size: 11px; font-weight: 600; color: var(--text-tertiary);
+    letter-spacing: 2.5px; text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 12px;
   }
+  .section-label::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
 
-  .section-label::after {
-    content: '';
-    flex: 1;
-    height: 0.5px;
-    background: var(--border);
-  }
-
-  .feature-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
+  .feature-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
   .feature-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 15px;
-    color: var(--text-secondary);
-    line-height: 1.6;
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 15px; color: var(--text-secondary); line-height: 1.6;
   }
-
   .feature-list li::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent-light);
-    flex-shrink: 0;
-    margin-top: 9px;
-  }
-
-  /* 테스트 참여 단계 */
-  .testing-section {
-    margin-bottom: 48px;
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.6s forwards;
-  }
-
-  .step-list {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .step-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 18px 22px;
-    background: var(--card-bg);
-    border: 0.5px solid var(--border);
-    border-radius: 12px;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .step-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(122, 181, 212, 0.08), transparent);
-    transition: left 0.8s ease;
-  }
-
-  .step-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-strong);
-    box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.18);
-  }
-
-  .step-card:hover::before { left: 100%; }
-
-  .step-num {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #7ab5d4, #4a8db8);
-    color: white;
-    font-size: 14px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .step-info {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .step-title {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 2px;
-  }
-
-  .step-desc {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    line-height: 1.5;
-  }
-
-  .step-arrow {
-    color: var(--accent-light);
-    font-size: 18px;
-    transition: transform 0.3s ease, color 0.3s ease;
-    flex-shrink: 0;
-  }
-
-  .step-card:hover .step-arrow {
-    transform: translateX(4px);
-    color: var(--accent);
-  }
-
-  .pricing-note {
-    font-size: 13px;
-    color: var(--text-tertiary);
-    line-height: 1.6;
-    padding-top: 16px;
-    margin-top: 4px;
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent-light); flex-shrink: 0; margin-top: 9px;
   }
 
   .legal-section {
-    margin-top: 60px;
-    padding-top: 32px;
-    border-top: 0.5px solid var(--border);
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.7s forwards;
+    margin-top: 60px; padding-top: 32px; border-top: 0.5px solid var(--border);
+    opacity: 0; animation: fadeUp 1s ease-out 0.6s forwards;
   }
-
-  .legal-links {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    font-size: 13px;
-  }
-
-  .legal-links a {
-    color: var(--text-tertiary);
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-
-  .legal-links a:hover {
-    color: var(--accent);
-  }
-
-  .legal-divider {
-    color: var(--text-tertiary);
-    opacity: 0.4;
-  }
+  .legal-links { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; }
+  .legal-links a { color: var(--text-tertiary); text-decoration: none; transition: color 0.3s ease; }
+  .legal-links a:hover { color: var(--accent); }
+  .legal-divider { color: var(--text-tertiary); opacity: 0.4; }
 
   .footer {
-    margin-top: 80px;
-    padding-top: 24px;
-    border-top: 0.5px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 16px;
-    opacity: 0;
-    animation: fadeUp 1s ease-out 0.8s forwards;
+    margin-top: 80px; padding-top: 24px; border-top: 0.5px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
+    opacity: 0; animation: fadeUp 1s ease-out 0.7s forwards;
   }
-
-  .contact a {
-    color: var(--text-secondary);
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.3s ease;
-  }
-
+  .contact a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.3s ease; }
   .contact a:hover { color: var(--accent); }
-
-  .copyright {
-    font-size: 13px;
-    color: var(--text-tertiary);
-  }
+  .copyright { font-size: 13px; color: var(--text-tertiary); }
 
   [data-lang="ko"] .lang-en { display: none; }
   [data-lang="en"] .lang-ko { display: none; }
@@ -501,32 +257,20 @@
 
   /* ===== 음악 플레이어 ===== */
   .music-player {
-    position: fixed;
-    bottom: 32px;
-    right: 32px;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    position: fixed; bottom: 32px; right: 32px; z-index: 100;
+    display: flex; align-items: center; gap: 8px;
     padding: 8px 12px 8px 8px;
-    background: var(--card-bg);
-    border: 0.5px solid var(--border);
-    border-radius: 50px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: var(--card-bg); border: 0.5px solid var(--border);
+    border-radius: 50px; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.2);
-    opacity: 0;
-    animation: fadeUp 1s ease-out 1s forwards;
+    opacity: 0; animation: fadeUp 1s ease-out 1s forwards;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
-    -webkit-user-select: none;
+    user-select: none; -webkit-user-select: none;
   }
-
   .music-player:hover {
     border-color: var(--border-strong);
     box-shadow: 0 12px 32px -8px rgba(74, 141, 184, 0.28);
   }
-
   .music-player.dragging {
     cursor: grabbing;
     box-shadow: 0 16px 40px -8px rgba(74, 141, 184, 0.4);
@@ -534,150 +278,65 @@
   }
 
   .drag-handle {
-    width: 18px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: grab;
-    color: var(--text-tertiary);
-    flex-shrink: 0;
-    transition: color 0.3s ease;
+    width: 18px; height: 36px; display: flex; align-items: center;
+    justify-content: center; cursor: grab; color: var(--text-tertiary);
+    flex-shrink: 0; transition: color 0.3s ease;
   }
-
   .drag-handle:hover { color: var(--accent); }
   .drag-handle:active { cursor: grabbing; }
-
-  .drag-handle svg {
-    width: 12px;
-    height: 12px;
-    fill: currentColor;
-  }
+  .drag-handle svg { width: 12px; height: 12px; fill: currentColor; }
 
   .play-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    border: none;
+    width: 36px; height: 36px; border-radius: 50%; border: none;
     background: linear-gradient(135deg, #7ab5d4, #4a8db8);
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    padding: 0;
+    color: white; cursor: pointer; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; padding: 0;
   }
-
-  .play-btn:hover {
-    transform: scale(1.08);
-    box-shadow: 0 4px 12px rgba(74, 141, 184, 0.35);
-  }
-
+  .play-btn:hover { transform: scale(1.08); box-shadow: 0 4px 12px rgba(74, 141, 184, 0.35); }
   .play-btn:active { transform: scale(0.95); }
-
-  .play-btn svg {
-    width: 14px;
-    height: 14px;
-    fill: white;
-  }
-
+  .play-btn svg { width: 14px; height: 14px; fill: white; }
   .play-btn .icon-pause { display: none; }
   .music-player.playing .play-btn .icon-play { display: none; }
   .music-player.playing .play-btn .icon-pause { display: block; }
 
   .track-select {
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 4px 22px 4px 4px;
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+    background: transparent; border: none; color: var(--text-secondary);
+    font-family: inherit; font-size: 13px; font-weight: 500; cursor: pointer;
+    padding: 4px 22px 4px 4px; outline: none;
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
     background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b8a9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 4px center;
-    background-size: 12px;
-    transition: color 0.3s ease;
-    max-width: 110px;
+    background-repeat: no-repeat; background-position: right 4px center;
+    background-size: 12px; transition: color 0.3s ease; max-width: 110px;
   }
-
   .track-select:hover { color: var(--text-primary); }
   .track-select option { background: var(--card-bg); color: var(--text-primary); }
   [data-theme="dark"] .track-select option { background: #1a3149; }
 
   .icon-btn {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    color: var(--text-tertiary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: color 0.3s ease, background 0.3s ease;
-    padding: 0;
-    position: relative;
+    width: 28px; height: 28px; border-radius: 50%; border: none;
+    background: transparent; color: var(--text-tertiary); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    transition: color 0.3s ease, background 0.3s ease; padding: 0; position: relative;
   }
-
-  .icon-btn:hover {
-    color: var(--accent);
-    background: var(--border);
-  }
-
-  .icon-btn svg {
-    width: 14px;
-    height: 14px;
-    fill: currentColor;
-  }
-
-  .repeat-btn.active {
-    color: var(--accent);
-    background: var(--border);
-  }
-
+  .icon-btn:hover { color: var(--accent); background: var(--border); }
+  .icon-btn svg { width: 14px; height: 14px; fill: currentColor; }
+  .repeat-btn.active { color: var(--accent); background: var(--border); }
   .repeat-btn .repeat-one { display: none; }
   .repeat-btn.repeat-one-mode .repeat-all { display: none; }
   .repeat-btn.repeat-one-mode .repeat-one { display: block; }
 
   .icon-btn::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--text-primary);
-    color: var(--card-bg);
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 11px;
-    font-weight: 500;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    content: attr(data-tooltip); position: absolute;
+    bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+    background: var(--text-primary); color: var(--card-bg);
+    padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 500;
+    white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
   }
-
-  [data-theme="dark"] .icon-btn::after {
-    background: #e8f1f8;
-    color: #1a3149;
-  }
-
+  [data-theme="dark"] .icon-btn::after { background: #e8f1f8; color: #1a3149; }
   .icon-btn:hover::after { opacity: 0.9; }
 
-  @media (max-width: 900px) {
-    .container { max-width: 520px; padding-left: 80px; }
-  }
-
+  @media (max-width: 900px) { .container { max-width: 520px; padding-left: 80px; } }
   @media (max-width: 640px) {
     .container { max-width: 100%; margin: 0; padding: 80px 24px 100px; }
     .controls { top: 20px; right: 20px; gap: 12px; }
@@ -686,15 +345,8 @@
     .app-header { flex-direction: column; align-items: flex-start; gap: 16px; }
     .app-header-icon { width: 64px; height: 64px; font-size: 26px; border-radius: 16px; }
     .glance-grid { grid-template-columns: 1fr; }
-    .music-player {
-      bottom: 16px;
-      right: 16px;
-      padding: 6px 10px 6px 6px;
-    }
-    .track-select {
-      font-size: 12px;
-      max-width: 90px;
-    }
+    .music-player { bottom: 16px; right: 16px; padding: 6px 10px 6px 6px; }
+    .track-select { font-size: 12px; max-width: 90px; }
   }
 </style>
 </head>
@@ -771,17 +423,6 @@
   <div class="description">
     <span class="lang-ko">한국어를 중심으로 9개국어를 다루는 단어 사전입니다. 한국어 단어 하나가 단계별 영어 동의어 여러 개에 연결되고, 각 동의어마다 짧은 뉘앙스 설명이 함께 표시됩니다. 단계별 영어 어휘를 다지려는 한국 학생, 영어를 다듬는 직장인, 한국어를 배우는 비한국어 사용자를 위해 만들어졌습니다.</span>
     <span class="lang-en">A Korean-centered vocabulary reference covering 9 languages. Each Korean word maps to multiple English synonyms grouped by register, each with a short nuance note. Made for Korean students working through tiered vocabulary, professionals refining their English, and non-Korean speakers learning Korean.</span>
-  </div>
-
-  <div class="testing-notice">
-    <div class="testing-notice-label">
-      <span class="lang-ko">비공개 테스트 진행 중</span>
-      <span class="lang-en">Closed testing in progress</span>
-    </div>
-    <div class="testing-notice-text">
-      <span class="lang-ko">출시 전 비공개 테스트에 참여해 주실 분을 모집합니다. 아래 3단계를 순서대로 진행해 주세요.</span>
-      <span class="lang-en">We're looking for testers before launch. Please follow the 3 steps below in order.</span>
-    </div>
   </div>
 
   <div class="at-a-glance">
@@ -889,63 +530,6 @@
         <span class="lang-en">Local backup and restore (.json)</span>
       </li>
     </ul>
-  </div>
-
-  <div class="testing-section">
-    <div class="section-label">
-      <span class="lang-ko">테스트 참여 방법</span>
-      <span class="lang-en">How to join testing</span>
-    </div>
-    <div class="step-list">
-      <a href="https://groups.google.com/g/star-catcher" target="_blank" rel="noopener" class="step-card">
-        <div class="step-num">1</div>
-        <div class="step-info">
-          <div class="step-title">
-            <span class="lang-ko">구글 그룹스 가입</span>
-            <span class="lang-en">Join the Google Group</span>
-          </div>
-          <div class="step-desc">
-            <span class="lang-ko">테스터 그룹에 먼저 가입해 주세요.</span>
-            <span class="lang-en">First, join the tester group.</span>
-          </div>
-        </div>
-        <div class="step-arrow">→</div>
-      </a>
-
-      <a href="https://play.google.com/apps/testing/com.korea919.dictionary" target="_blank" rel="noopener" class="step-card">
-        <div class="step-num">2</div>
-        <div class="step-info">
-          <div class="step-title">
-            <span class="lang-ko">비공개 테스트 참여</span>
-            <span class="lang-en">Opt in to closed testing</span>
-          </div>
-          <div class="step-desc">
-            <span class="lang-ko">테스트 옵트인 페이지에서 참여를 신청합니다.</span>
-            <span class="lang-en">Opt in on the testing page.</span>
-          </div>
-        </div>
-        <div class="step-arrow">→</div>
-      </a>
-
-      <a href="https://play.google.com/store/apps/details?id=com.korea919.dictionary" target="_blank" rel="noopener" class="step-card">
-        <div class="step-num">3</div>
-        <div class="step-info">
-          <div class="step-title">
-            <span class="lang-ko">플레이스토어에서 다운로드</span>
-            <span class="lang-en">Download from Play Store</span>
-          </div>
-          <div class="step-desc">
-            <span class="lang-ko">출시 전 비공개 테스트용 앱을 받아 사용해 보세요.</span>
-            <span class="lang-en">Get the pre-release test build and try it out.</span>
-          </div>
-        </div>
-        <div class="step-arrow">→</div>
-      </a>
-    </div>
-    <div class="pricing-note">
-      <span class="lang-ko">출시 시 무료 (배너·전면·보상형 광고 포함). 광고 제거는 일회성 인앱 결제로 가능합니다.</span>
-      <span class="lang-en">Free on release with banner, interstitial, and rewarded ads. One-time in-app purchase to remove ads.</span>
-    </div>
   </div>
 
   <div class="legal-section">
@@ -1085,7 +669,6 @@
 
   document.body.classList.add('bgm-paused');
 
-  // 저장된 곡/위치/재생상태 복원
   const savedTrack = localStorage.getItem('currentTrack');
 
   function findTrackOption(savedSrc) {
@@ -1099,12 +682,9 @@
   }
 
   const matchIdx = findTrackOption(savedTrack);
-  if (matchIdx !== null) {
-    trackSelect.selectedIndex = matchIdx;
-  }
+  if (matchIdx !== null) trackSelect.selectedIndex = matchIdx;
   bgm.src = trackSelect.value;
 
-  // 자동재생 차단 시 다음 사용자 인터랙션에 재생하는 헬퍼
   function setupResumeOnInteraction() {
     const resumeOnce = () => {
       if (bgm.paused && localStorage.getItem('wasPlaying') === 'true') {
@@ -1122,23 +702,17 @@
     document.addEventListener('keydown', resumeOnce, { once: true });
   }
 
-  // loadedmetadata: 일반(풀)로드 시 이어재생
   bgm.addEventListener('loadedmetadata', () => {
     const t = parseFloat(localStorage.getItem('currentTime') || '0');
-    if (t > 0 && t < bgm.duration) {
-      bgm.currentTime = t;
-    }
+    if (t > 0 && t < bgm.duration) bgm.currentTime = t;
     if (localStorage.getItem('wasPlaying') === 'true') {
       bgm.play().then(() => {
         musicPlayer.classList.add('playing');
         document.body.classList.remove('bgm-paused');
-      }).catch(() => {
-        setupResumeOnInteraction();
-      });
+      }).catch(() => { setupResumeOnInteraction(); });
     }
   });
 
-  // timeupdate: 브라우저가 ~250ms마다 자동 발생 (setInterval보다 효율적)
   bgm.addEventListener('timeupdate', () => {
     if (!bgm.paused) {
       localStorage.setItem('currentTime', bgm.currentTime.toString());
@@ -1147,7 +721,6 @@
     }
   });
 
-  // pagehide: beforeunload보다 bfcache 친화적
   window.addEventListener('pagehide', () => {
     if (!bgm.paused) {
       localStorage.setItem('currentTime', bgm.currentTime.toString());
@@ -1158,26 +731,19 @@
     }
   });
 
-  // pageshow: bfcache 복원 시 호출됨
   window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-      if (localStorage.getItem('wasPlaying') === 'true' && bgm.paused) {
-        const t = parseFloat(localStorage.getItem('currentTime') || '0');
-        if (t > 0 && bgm.duration && t < bgm.duration) {
-          bgm.currentTime = t;
-        }
-        bgm.play().then(() => {
-          musicPlayer.classList.add('playing');
-          document.body.classList.remove('bgm-paused');
-        }).catch(() => {
-          setupResumeOnInteraction();
-        });
-      }
+    if (event.persisted && localStorage.getItem('wasPlaying') === 'true' && bgm.paused) {
+      const t = parseFloat(localStorage.getItem('currentTime') || '0');
+      if (t > 0 && bgm.duration && t < bgm.duration) bgm.currentTime = t;
+      bgm.play().then(() => {
+        musicPlayer.classList.add('playing');
+        document.body.classList.remove('bgm-paused');
+      }).catch(() => { setupResumeOnInteraction(); });
     }
   });
 
   let repeatMode = localStorage.getItem('repeatMode') || 'all';
-  
+
   function applyRepeatMode() {
     if (repeatMode === 'one') {
       bgm.loop = true;
@@ -1200,9 +766,8 @@
 
   playBtn.addEventListener('click', () => {
     if (bgm.paused) {
-      bgm.play().then(() => {
-        musicPlayer.classList.add('playing');
-      }).catch(err => console.log('재생 실패:', err));
+      bgm.play().then(() => { musicPlayer.classList.add('playing'); })
+        .catch(err => console.log('재생 실패:', err));
     } else {
       bgm.pause();
       musicPlayer.classList.remove('playing');
@@ -1215,14 +780,11 @@
     bgm.src = e.target.value;
     localStorage.setItem('currentTrack', e.target.value);
     localStorage.setItem('currentTime', '0');
-    if (wasP) {
-      bgm.play().then(() => musicPlayer.classList.add('playing'));
-    }
+    if (wasP) bgm.play().then(() => musicPlayer.classList.add('playing'));
   });
 
   function playNext() {
-    const currentIdx = trackSelect.selectedIndex;
-    const nextIdx = (currentIdx + 1) % trackSelect.options.length;
+    const nextIdx = (trackSelect.selectedIndex + 1) % trackSelect.options.length;
     trackSelect.selectedIndex = nextIdx;
     bgm.src = trackSelect.value;
     localStorage.setItem('currentTrack', trackSelect.value);
@@ -1231,10 +793,7 @@
   }
 
   nextBtn.addEventListener('click', playNext);
-
-  bgm.addEventListener('ended', () => {
-    if (repeatMode === 'all') playNext();
-  });
+  bgm.addEventListener('ended', () => { if (repeatMode === 'all') playNext(); });
 
   bgm.addEventListener('play', () => {
     musicPlayer.classList.add('playing');
@@ -1246,9 +805,7 @@
   });
 
   // 드래그
-  let isDragging = false;
-  let dragOffsetX = 0;
-  let dragOffsetY = 0;
+  let isDragging = false, dragOffsetX = 0, dragOffsetY = 0;
 
   const savedPos = localStorage.getItem('playerPosition');
   if (savedPos) {
@@ -1275,13 +832,9 @@
 
   function doDrag(clientX, clientY) {
     if (!isDragging) return;
-    let newLeft = clientX - dragOffsetX;
-    let newTop = clientY - dragOffsetY;
     const rect = musicPlayer.getBoundingClientRect();
-    const maxLeft = window.innerWidth - rect.width;
-    const maxTop = window.innerHeight - rect.height;
-    newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-    newTop = Math.max(0, Math.min(newTop, maxTop));
+    let newLeft = Math.max(0, Math.min(clientX - dragOffsetX, window.innerWidth - rect.width));
+    let newTop = Math.max(0, Math.min(clientY - dragOffsetY, window.innerHeight - rect.height));
     musicPlayer.style.left = newLeft + 'px';
     musicPlayer.style.top = newTop + 'px';
   }
@@ -1290,30 +843,19 @@
     if (!isDragging) return;
     isDragging = false;
     musicPlayer.classList.remove('dragging');
-    localStorage.setItem('playerPosition', JSON.stringify({
-      left: musicPlayer.style.left,
-      top: musicPlayer.style.top
-    }));
+    localStorage.setItem('playerPosition', JSON.stringify({ left: musicPlayer.style.left, top: musicPlayer.style.top }));
   }
 
-  dragHandle.addEventListener('mousedown', (e) => {
-    e.preventDefault();
-    startDrag(e.clientX, e.clientY);
-  });
+  dragHandle.addEventListener('mousedown', (e) => { e.preventDefault(); startDrag(e.clientX, e.clientY); });
   document.addEventListener('mousemove', (e) => doDrag(e.clientX, e.clientY));
   document.addEventListener('mouseup', endDrag);
 
   dragHandle.addEventListener('touchstart', (e) => {
     e.preventDefault();
-    const t = e.touches[0];
-    startDrag(t.clientX, t.clientY);
+    startDrag(e.touches[0].clientX, e.touches[0].clientY);
   }, { passive: false });
   document.addEventListener('touchmove', (e) => {
-    if (isDragging) {
-      e.preventDefault();
-      const t = e.touches[0];
-      doDrag(t.clientX, t.clientY);
-    }
+    if (isDragging) { e.preventDefault(); doDrag(e.touches[0].clientX, e.touches[0].clientY); }
   }, { passive: false });
   document.addEventListener('touchend', endDrag);
 </script>

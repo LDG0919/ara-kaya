@@ -31,7 +31,7 @@
 <body>
 <main>
   <h1>Square Privacy Policy</h1>
-  <p class="meta">Effective date: June 2, 2026</p>
+  <p class="meta">Effective date: June 13, 2026</p>
 
   <p>
     Square (“the Service”) is a co-op service where developers test one another's
@@ -61,6 +61,12 @@
       <td>Generated through use of the Service</td>
     </tr>
     <tr>
+      <td>Push<br>notifications</td>
+      <td>Push notification token (FCM registration token — a device identifier),
+          push notification preferences</td>
+      <td>Generated automatically when notifications are allowed and the app runs</td>
+    </tr>
+    <tr>
       <td>Automatically<br>collected</td>
       <td>Advertising ID, device/usage information (for ad delivery and
           service operation)</td>
@@ -79,9 +85,17 @@
     <li>Member identification and authentication via Google sign-in</li>
     <li>Co-op matching (creating/joining rooms) and attendance (app-launch) records</li>
     <li>Providing a means of contact between users (only for contacts set to public)</li>
-    <li>Sending notifications (e.g., room closure) and operating/improving the Service</li>
+    <li>Sending room activity notifications (applications, participation, room
+        closure, removal, etc.) via the in-app notification box and device push
+        notifications, and operating/improving the Service</li>
     <li>Ad delivery and measurement</li>
   </ul>
+  <p class="note">
+    The push notification token is used solely to deliver the room activity
+    notifications above to your device; it is not used for advertising or
+    marketing. You can turn off push notifications at any time in the app
+    settings or your device's notification permission (see Section 6).
+  </p>
 
   <h2>3. Disclosure to Third Parties</h2>
   <ul>
@@ -112,7 +126,8 @@
     <tr>
       <td>Google LLC (Firebase)</td>
       <td>Authentication, database (Firestore), file storage (Storage),
-          server functions (Cloud Functions)</td>
+          server functions (Cloud Functions), push notification delivery
+          (Cloud Messaging)</td>
     </tr>
     <tr>
       <td>Google LLC (AdMob)</td>
@@ -125,13 +140,17 @@
     <li>Your personal information is <b>deleted without delay upon account deletion</b>.</li>
     <li>
       Service data is cleaned up automatically: rooms 60 days after creation,
-      notifications 60 days after receipt, and attendance records on roughly a
+      notifications 14 days after receipt, and attendance records on roughly a
       60-day basis.
     </li>
     <li>
+      The push notification token is <b>deleted upon sign-out or account
+      deletion</b>, and tokens that are no longer valid are removed automatically.
+    </li>
+    <li>
       Upon account deletion, account info, contacts, registered apps, room/
-      participation/attendance records, notifications, and your authentication
-      account are removed from the server.
+      participation/attendance records, notifications, the push notification
+      token, and your authentication account are removed from the server.
     </li>
     <li>Where retention is required by law, data is stored separately for that period.</li>
   </ul>
@@ -141,6 +160,12 @@
     <li>
       <b>Access/Edit</b>: you can view and edit your nickname, contacts, and
       public/private settings directly on the in-app profile screen.
+    </li>
+    <li>
+      <b>Opt out of push notifications</b>: turn off <b>Settings → “Receive push
+      notifications”</b> in the app (you can also turn them off by type), or revoke
+      the device's notification permission, and no push notifications will be sent.
+      You can still view activity in the in-app notification box.
     </li>
     <li>
       <b>Account deletion</b>: you can delete your account and data yourself via
@@ -179,7 +204,7 @@
     changes through the app or this page.
   </p>
 
-  <p class="meta" style="margin-top:32px;">Last updated: June 2, 2026</p>
+  <p class="meta" style="margin-top:32px;">Last updated: June 13, 2026</p>
 </main>
 </body>
 </html>

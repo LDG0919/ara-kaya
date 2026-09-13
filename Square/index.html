@@ -309,6 +309,12 @@
     box-shadow: 0 8px 24px -8px rgba(74, 141, 184, 0.18);
   }
 
+  .download-btn.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
   .download-btn svg {
     width: 18px;
     height: 18px;
@@ -687,7 +693,7 @@
       <span class="lang-en">Download</span>
     </div>
     <div class="download-buttons">
-      <a href="https://play.google.com/store/apps/details?id=com.korea919.square" target="_blank" rel="noopener" class="download-btn">
+      <a class="download-btn disabled" aria-disabled="true" role="link" tabindex="-1">
         <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.396-3.396l2.823 1.633a1 1 0 0 1 0 1.730l-2.825 1.635-2.518-2.519 2.520-2.479zM5.864 2.658L16.802 8.99l-2.302 2.302-8.636-8.634z"/>
         </svg>
@@ -1069,4 +1075,3 @@
 
 </body>
 </html>
-
